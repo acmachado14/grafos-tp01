@@ -1,16 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef struct vertVizi* apontadorVerticeVizinho;
 typedef struct vertVizi{
-    int numeroDovertice;
+    int numeroDoVertice;
     float pesoAresta;
-    struct vertVizi *proximo;
-    struct vertVizi *ultimo;
+    apontadorVerticeVizinho proximo;
 }VerticeVizinho;
 
 typedef struct{
     int numeroDoVertice;
-    VerticeVizinho *verticeVizinho;
+    apontadorVerticeVizinho primeiro;
+    apontadorVerticeVizinho ultimo;
 }Vertice;
 
 typedef struct{
@@ -18,7 +19,10 @@ typedef struct{
     Vertice *vertice;
 }Grafo;
 
-void inicialiGrafo(Grafo *grafo, int quantidadeVertices);
+void inicializaGrafo(Grafo *grafo, int quantidadeVertices);
 void inserirVertices(Vertice *vertice, int numeroDoVertice);
 void setQuantidadeVertices(Grafo *grafo, int quantidadeVertices);
 int getQuantidadeVertices(Grafo *grafo);
+
+void inserirAresta(Grafo *grafo, int verticeOrigem, int verticeDestino, float pesoAresta);
+void inserirArestaAuxiliar(Vertice *vertice, int verticeDestino, float pesoAresta);
