@@ -43,7 +43,7 @@ void inserirArestaAuxiliar(Vertice *vertice, int verticeDestino, float pesoArest
     vertice->ultimo->pesoAresta = pesoAresta;
 }
 
-void leituradados(Grafo grafo){
+void leituradados(Grafo *grafo){
     char nomeArquivo[43];
     printf("Digite o nome do arquivo que sera lido: ");
     scanf("%s", nomeArquivo);
@@ -57,10 +57,29 @@ void leituradados(Grafo grafo){
     }
     int quantidadeDeVertices, verticeOrigem, verticeDestino;
     float pesoAresta;
-    fscanf(file, "%d ", &quantidadeDeVertices);;
+    fscanf(file, "%d ", &quantidadeDeVertices);
+    inicializaGrafo(grafo, quantidadeDeVertices);
     while (!feof(file)){
         fscanf(file,"%d %d %f", &verticeOrigem, &verticeDestino, &pesoAresta);
-        inserirAresta(&grafo, verticeOrigem, verticeDestino, pesoAresta);
+        inserirAresta(grafo, verticeOrigem, verticeDestino, pesoAresta);
     }
     fclose(file);
 }
+
+int ordemGrafo(Grafo *grafo){
+    return getQuantidadeVertices(grafo);
+}
+
+int tamanhoGrafo(Grafo *grafo){
+    int i, quantidadeArestas = 0;
+    apontadorVerticeVizinho verticeVizinho;
+    for(i = 0; i < getQuantidadeVertices(grafo); i++){
+        verticeVizinho = grafo->vertice[i].primeiro;
+        while (verticeVizinho != NULL){
+            quantidadeArestas++;
+            verticeVizinho = verticeVizinho->proximo;
+        }
+    }
+    return quantidadeArestas;
+}
+

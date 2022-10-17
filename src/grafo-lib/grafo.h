@@ -21,11 +21,19 @@ typedef struct{
 }Grafo;
 
 void inicializaGrafo(Grafo *grafo, int quantidadeVertices);
+
 void inserirVertices(Vertice *vertice, int numeroDoVertice);
+
 void setQuantidadeVertices(Grafo *grafo, int quantidadeVertices);
+
 int getQuantidadeVertices(Grafo *grafo);
 
 void inserirAresta(Grafo *grafo, int verticeOrigem, int verticeDestino, float pesoAresta);
+
 void inserirArestaAuxiliar(Vertice *vertice, int verticeDestino, float pesoAresta);
 
-void leituradados(Grafo grafo);
+void leituradados(Grafo *grafo);
+
+int ordemGrafo(Grafo *grafo);
+
+int tamanhoGrafo(Grafo *grafo);
