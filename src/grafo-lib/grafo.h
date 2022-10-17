@@ -37,3 +37,5 @@ void leituradados(Grafo *grafo);
 int ordemGrafo(Grafo *grafo);
 
 int tamanhoGrafo(Grafo *grafo);
+
+char* verticesVizinhos(Grafo *grafo, int verticeOrigem);

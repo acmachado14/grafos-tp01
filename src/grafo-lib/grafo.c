@@ -83,3 +83,37 @@ int tamanhoGrafo(Grafo *grafo){
     return quantidadeArestas;
 }
 
+char* verticesVizinhos(Grafo *grafo, int verticeOrigem){
+    apontadorVerticeVizinho verticeVizinho;
+    char aux[20] = "";
+    char *vertices = (char*)malloc(sizeof(char));
+    char verticeAux[10];
+    int i;
+    strcpy(vertices, aux);
+
+    for(i = 0; i < getQuantidadeVertices(grafo); i++){
+        verticeVizinho = grafo->vertice[i].primeiro;
+        if(i + 1 == verticeOrigem){
+            while (verticeVizinho != NULL){
+                itoa(verticeVizinho->numeroDoVertice, verticeAux, 10);
+                strcat(vertices, verticeAux);
+                strcat(vertices, " ");
+                verticeVizinho = verticeVizinho->proximo;
+            }
+        }
+        else{
+            while (verticeVizinho != NULL){
+                if(verticeVizinho->numeroDoVertice == verticeOrigem){
+                    itoa((i + 1), verticeAux, 10);
+                    strcat(vertices, verticeAux);
+                    strcat(vertices, " ");
+                }
+                verticeVizinho = verticeVizinho->proximo;
+            }
+        }
+    }
+    if(strlen(vertices) < 1){
+        strcat(vertices, "O vertice nao possui vizinhos");
+    }
+    return vertices;
+}
