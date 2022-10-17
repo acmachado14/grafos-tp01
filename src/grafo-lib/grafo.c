@@ -7,20 +7,26 @@ void inicializaGrafo(Grafo *grafo, int quantidadeVertices){
         inserirVertices(&grafo->vertice[i], i);
     }
 }
+
 void inserirVertices(Vertice *vertice, int numeroDoVertice){
-    vertice->numeroDoVertice = numeroDoVertice;
+    vertice->numeroDoVertice = numeroDoVertice + 1; // Incrementa 1 pois o vertice 1 esta na posicao 0, o vertice 2
+                                                    // esta na posicao 1 e assim por adiante, na lista de adijacencia, 
+                                                    // que foi criada na variaver 'vertice' que esta dentro da struct Grafo
     vertice->primeiro = NULL;
     vertice->ultimo = NULL;
 }
+
 void setQuantidadeVertices(Grafo *grafo, int quantidadeVertices){
     grafo->quantidadeDeVertices = quantidadeVertices;
 }
+
 int getQuantidadeVertices(Grafo *grafo){
     return grafo->quantidadeDeVertices;
 }
 
 void inserirAresta(Grafo *grafo, int verticeOrigem, int verticeDestino, float pesoAresta){
-    inserirArestaAuxiliar(&grafo->vertice[verticeOrigem], verticeDestino, pesoAresta);
+    inserirArestaAuxiliar(&grafo->vertice[verticeOrigem - 1], verticeDestino, pesoAresta);
+    // Foi decrementado 1 pois o vertice 'verticeOrigem' esta uma possicao antes na lista de adijacencia
 }
 
 void inserirArestaAuxiliar(Vertice *vertice, int verticeDestino, float pesoAresta){
@@ -35,4 +41,26 @@ void inserirArestaAuxiliar(Vertice *vertice, int verticeDestino, float pesoArest
     vertice->ultimo->proximo = NULL;
     vertice->ultimo->numeroDoVertice = verticeDestino;
     vertice->ultimo->pesoAresta = pesoAresta;
+}
+
+void leituradados(Grafo grafo){
+    char nomeArquivo[43];
+    printf("Digite o nome do arquivo que sera lido: ");
+    scanf("%s", nomeArquivo);
+    char diretorio[50] = "routine/grafos-txt/";
+    strcat(strcat(diretorio, nomeArquivo), ".txt");
+    FILE *file;
+    file = fopen(diretorio, "r");
+    if(file == NULL){
+        printf("Erro na abertura do arquivo de entrada !!!!!!!!\n");
+        return;
+    }
+    int quantidadeDeVertices, verticeOrigem, verticeDestino;
+    float pesoAresta;
+    fscanf(file, "%d ", &quantidadeDeVertices);;
+    while (!feof(file)){
+        fscanf(file,"%d %d %f", &verticeOrigem, &verticeDestino, &pesoAresta);
+        inserirAresta(&grafo, verticeOrigem, verticeDestino, pesoAresta);
+    }
+    fclose(file);
 }

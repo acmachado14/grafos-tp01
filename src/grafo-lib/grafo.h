@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct vertVizi* apontadorVerticeVizinho;
 typedef struct vertVizi{
@@ -26,3 +27,5 @@ int getQuantidadeVertices(Grafo *grafo);
 
 void inserirAresta(Grafo *grafo, int verticeOrigem, int verticeDestino, float pesoAresta);
 void inserirArestaAuxiliar(Vertice *vertice, int verticeDestino, float pesoAresta);
+
+void leituradados(Grafo grafo);
