@@ -32,10 +32,16 @@ void inserirAresta(Grafo *grafo, int verticeOrigem, int verticeDestino, float pe
 
 void inserirArestaAuxiliar(Vertice *vertice, int verticeDestino, float pesoAresta);
 
-void leituradados(Grafo *grafo);
+void leituraSequenciaGraus(Grafo *grafo);
 
 int ordemGrafo(Grafo *grafo);
 
 int tamanhoGrafo(Grafo *grafo);
 
-char* verticesVizinhos(Grafo *grafo, int verticeOrigem);
+char* verticesVizinhos(Grafo *grafo, int vertice);
+
+int verticeGrau(Grafo *grafo, int vertice);
+
+char* sequenciaGrausGrafo(Grafo *grafo);
+void quickSort(int **sequenciaGraus, int Esq, int Dir);
+void particaoQuickSort(int **sequenciaGraus, int Esq, int Dir,int *i, int *j);
