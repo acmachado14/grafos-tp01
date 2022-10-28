@@ -23,5 +23,6 @@ informar a(s) aresta(s) que não faz(em) parte da árvore de busca em profundida
 
 - [Angelo Machado](https://github.com/acmachado14)
 - [Arthur Bastos](https://github.com/ArthurFBastos)
-- [Guilherme Augutso](https://github.com/Guilherme-Schwann)
+- [Guilherme Augusto](https://github.com/Guilherme-Schwann)
 - [Iury Martins](https://github.com/iurymartins46)
+
