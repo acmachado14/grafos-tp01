@@ -233,3 +233,29 @@ void floydWarshall(Grafo *grafo, float ***matrizDistancia, int ***matrizCaminho)
     }
 }
 
+
+void buscaProfundidade(Grafo *grafo, int vertice){
+    int i, quantidadeVertices = getQuantidadeVertices(grafo);
+    int *visitados;
+    visitados = (int*)malloc(quantidadeVertices * sizeof(int));
+    for(i = 0; i < quantidadeVertices; i++){
+        visitados[i] = 0;
+    }
+    buscaProfundidadeAux(grafo, vertice, visitados);
+    free(visitados);
+}
+
+// Funcao auxiliar para a busca em profundidade
+// Recebe o grafo, o vertice a ser visitado e um vetor de visitados
+void buscaProfundidadeAux(Grafo *grafo, int vertice, int *visitados){
+    apontadorVerticeVizinho verticeVizinho;
+    visitados[vertice - 1] = 1;
+    printf("%d ", vertice);
+    verticeVizinho = grafo->vertice[vertice - 1].primeiro;
+    while (verticeVizinho != NULL){
+        if(visitados[verticeVizinho->numeroDoVertice - 1] == 0){
+            buscaProfundidadeAux(grafo, verticeVizinho->numeroDoVertice, visitados);
+        }
+        verticeVizinho = verticeVizinho->proximo;
+    }
+}
