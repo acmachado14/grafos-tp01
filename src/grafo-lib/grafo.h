@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 typedef struct vertVizi* apontadorVerticeVizinho;
 typedef struct vertVizi{
@@ -45,3 +46,5 @@ int verticeGrau(Grafo *grafo, int vertice);
 char* sequenciaGrausGrafo(Grafo *grafo);
 void quickSort(int **sequenciaGraus, int Esq, int Dir);
 void particaoQuickSort(int **sequenciaGraus, int Esq, int Dir,int *i, int *j);
+
+void  FloydWarshall(Grafo *grafo, float ***matrizDistancia, int ***matrizCaminho);

@@ -1,5 +1,7 @@
 #include "grafo.h"
 
+#define maiorNumero  2147483647
+
 void inicializaGrafo(Grafo *grafo, int quantidadeVertices){
     setQuantidadeVertices(grafo, quantidadeVertices);
     grafo->vertice = (Vertice*)malloc(quantidadeVertices * sizeof(Vertice));
@@ -175,5 +177,59 @@ void particaoQuickSort(int **sequenciaGraus, int Esq, int Dir,int *i, int *j){
             (*j)--;
         }
     } while (*i <= *j);
+}
+
+void floydWarshall(Grafo *grafo, float ***matrizDistancia, int ***matrizCaminho){
+    int i, j, k, quantidadeVertices;
+    apontadorVerticeVizinho verticeVizinho;
+    quantidadeVertices = getQuantidadeVertices(grafo);
+    bool existeAresta;
+    
+    for(i = 0; i < quantidadeVertices; i++){
+        verticeVizinho = grafo->vertice[i].primeiro;
+        for(j = 0; j < quantidadeVertices; j++){
+            if(i == j){
+                (*matrizDistancia[i][j]) = 0;
+            }
+            else{
+                existeAresta = false;
+                while (verticeVizinho != NULL){
+                    if(verticeVizinho->numeroDoVertice == j + 1){
+                        existeAresta = true;
+                        break;
+                    }
+                    verticeVizinho = verticeVizinho->proximo;
+                }
+                if(existeAresta){
+                    (*matrizDistancia[i][j]) = verticeVizinho->pesoAresta;
+                }
+                else{
+                    (*matrizDistancia[i][j]) = maiorNumero;
+                }
+            }
+        }
+    }
+
+    for(i = 0; i < quantidadeVertices; i++){
+        for(j = 0; j < quantidadeVertices; j++){
+            if((*matrizDistancia[i][j]) == maiorNumero){
+                (*matrizCaminho[i][j]) = 0;
+            }
+            else{
+                (*matrizCaminho[i][j]) = i;
+            }
+        }
+    }
+
+    for(k = 0; k < quantidadeVertices; k++){
+        for(i = 0; i < quantidadeVertices; i++){
+            for(j = 0; j < quantidadeVertices; j++){
+                if((*matrizDistancia[i][j]) > ((*matrizDistancia[i][k]) + (*matrizDistancia[k][j]))){
+                    (*matrizDistancia[i][j]) = ((*matrizDistancia[i][k]) + (*matrizDistancia[k][j]));
+                    (*matrizCaminho[i][j]) = (*matrizCaminho[k][j]);
+                }
+            }
+        }
+    }
 }
 
