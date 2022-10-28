@@ -1,10 +1,10 @@
 # grafos-tp01
 
- * [ ] Retornar a ordem do grafo
- * [ ] Retornar o tamanho do grafo
- * [ ] Retornar os vizinhos de um vértice fornecido
- * [ ] Determinar o grau de um vértice fornecido
- * [ ] Retornar a sequência de graus do grafo
+ * [x] Retornar a ordem do grafo
+ * [x] Retornar o tamanho do grafo
+ * [x] Retornar os vizinhos de um vértice fornecido
+ * [x] Determinar o grau de um vértice fornecido
+ * [x] Retornar a sequência de graus do grafo
  * [ ] Determinar a excentricidade de um vértice
  * [ ] Determinar o raio do grafo
  * [ ] Determinar o diâmetro do grafo
