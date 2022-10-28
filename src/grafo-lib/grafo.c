@@ -3,13 +3,13 @@
 void inicializaGrafo(Grafo *grafo, int quantidadeVertices){
     setQuantidadeVertices(grafo, quantidadeVertices);
     grafo->vertice = (Vertice*)malloc(quantidadeVertices * sizeof(Vertice));
-    grafo->matrizDistancias = (int**)malloc(quantidadeVertices * sizeof(int*));
+    grafo->matrizDistancias = (float**)malloc(quantidadeVertices * sizeof(float*));
     grafo->matrizCaminhos = (int**)malloc(quantidadeVertices * sizeof(int*));
     for(int i = 0; i < quantidadeVertices; i++){
         inserirVertices(&grafo->vertice[i], i + 1); // Incrementa 1 pois o vertice 1 esta na posicao 0, o vertice 2
                                                     // esta na posicao 1 e assim por adiante, na lista de adijacencia, 
                                                     // que foi criada na variaver 'vertice' que esta dentro da struct Grafo
-        grafo->matrizDistancias[i] = (int*)malloc(quantidadeVertices * sizeof(int));
+        grafo->matrizDistancias[i] = (float*)malloc(quantidadeVertices * sizeof(float));
         grafo->matrizCaminhos[i] = (int*)malloc(quantidadeVertices * sizeof(int));
     }
 }
@@ -33,16 +33,7 @@ void inserirAresta(Grafo *grafo, int verticeOrigem, int verticeDestino, float pe
     inserirArestaAuxiliar(&grafo->vertice[verticeDestino - 1], verticeOrigem, pesoAresta);
     // Foi decrementado 1 pois o vertice 'verticeOrigem' esta uma possicao anterior na lista de adijacencia
 }
-floydMarshall(grafo, vertice, i + 1)eiro;
-    }
-    else{
-        vertice->ultimo->proximo = (apontadorVerticeVizinho)malloc(sizeof(VerticeVizinho));
-        vertice->ultimo = vertice->ultimo->proximo;
-    }
-    vertice->ultimo->proximo = NULL;
-    vertice->ultimo->numeroDoVertice = verticeDestino;
-    vertice->ultimo->pesoAresta = pesoAresta;
-}
+
 
 void leituraSequenciaGraus(Grafo *grafo){
     char nomeArquivo[43] = "grafo1";
@@ -169,6 +160,10 @@ void particaoQuickSort(int **sequenciaGraus, int Esq, int Dir,int *i, int *j){
             (*j)--;
         }
     } while (*i <= *j);
+}
+
+void floydMarshall(Grafo* grafo){
+    float
 }
 
 int excentricidade(Grafo *grafo, int vertice){

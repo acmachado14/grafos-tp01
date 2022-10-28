@@ -18,7 +18,7 @@ typedef struct{
 typedef struct{
     int quantidadeDeVertices;
     Vertice *vertice;
-    int** matrizDistancias;
+    float** matrizDistancias;
     int** matrizCaminhos;
 }Grafo;
 
