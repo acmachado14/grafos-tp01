@@ -18,8 +18,6 @@ typedef struct{
 typedef struct{
     int quantidadeDeVertices;
     Vertice *vertice;
-    float** matrizDistancias;
-    int** matrizCaminhos;
 }Grafo;
 
 void inicializaGrafo(Grafo *grafo, int quantidadeVertices);
