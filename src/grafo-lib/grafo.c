@@ -420,19 +420,16 @@ void buscaProfundidade(Grafo *grafo, int vertice){
     arestas = (int**)malloc(quantidadeVertices * sizeof(int*));
     for(i = 0; i < quantidadeVertices; i++){
         arestas[i] = (int*)malloc(quantidadeVertices * sizeof(int));
-        for(int j = 0; j < quantidadeVertices; j++){
-            arestas[i][j] = 0;
-        }
     }
 
     printf("Sequencias de vertices visitados: ");
     buscaProfundidadeAux(grafo, vertice, visitados, &arestas);
     printf("\n");
 
-    printf("Arestas: ");
+    printf("Arestas nao usadas: ");
     for(i = 0; i < quantidadeVertices; i++){
         for(int j = 0; j < quantidadeVertices; j++){
-            if(arestas[i][j] == 0){
+            if(arestas[i][j] == 0 && i != j){
                 printf("%d%d ", i + 1, j + 1);
             }
         }
@@ -442,17 +439,19 @@ void buscaProfundidade(Grafo *grafo, int vertice){
     free(visitados);
 }
 
-// Funcao auxiliar para a busca em profundidade
-// Recebe o grafo, o vertice a ser visitado e um vetor de visitados
 void buscaProfundidadeAux(Grafo *grafo, int vertice, int *visitados, int ***arestas){
     apontadorVerticeVizinho verticeVizinho;
     visitados[vertice - 1] = 1;
     printf("%d ", vertice);
     verticeVizinho = grafo->vertice[vertice - 1].primeiro;
+    
+    (*arestas)[vertice - 1][verticeVizinho->numeroDoVertice - 1] = 0;
+    (*arestas)[verticeVizinho->numeroDoVertice - 1][vertice - 1] = 0;
     while (verticeVizinho != NULL){
         if(visitados[verticeVizinho->numeroDoVertice - 1] == 0){
             buscaProfundidadeAux(grafo, verticeVizinho->numeroDoVertice, visitados, arestas);
             (*arestas)[vertice - 1][verticeVizinho->numeroDoVertice - 1] = 1;
+            (*arestas)[verticeVizinho->numeroDoVertice - 1][vertice - 1] = 1;
         }
         verticeVizinho = verticeVizinho->proximo;
     }
