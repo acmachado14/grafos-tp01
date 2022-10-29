@@ -11,5 +11,6 @@ int main(){
     printf("Sequencia de graus: %s\n", sequenciaGrausGrafo(&grafo));
     printf("Busca de Profundidade: \n");
     buscaProfundidade(&grafo,1);
+    printf("Excentricidade: %f\n", excentricidadeVertice(&grafo, 1));
     return 0;
 }

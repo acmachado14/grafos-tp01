@@ -1,6 +1,5 @@
 #include "grafo.h"
 
-#define maiorNumero  2147483647
 
 void inicializaGrafo(Grafo *grafo, int quantidadeVertices){
     setQuantidadeVertices(grafo, quantidadeVertices);
@@ -184,14 +183,13 @@ void floydWarshall(Grafo *grafo, float ***matrizDistancia, int ***matrizCaminho)
     apontadorVerticeVizinho verticeVizinho;
     quantidadeVertices = getQuantidadeVertices(grafo);
     bool existeAresta;
-    
     for(i = 0; i < quantidadeVertices; i++){
-        verticeVizinho = grafo->vertice[i].primeiro;
         for(j = 0; j < quantidadeVertices; j++){
             if(i == j){
-                (*matrizDistancia[i][j]) = 0;
+                (*matrizDistancia)[i][j] = 0.0;
             }
             else{
+                verticeVizinho = grafo->vertice[i].primeiro;
                 existeAresta = false;
                 while (verticeVizinho != NULL){
                     if(verticeVizinho->numeroDoVertice == j + 1){
@@ -201,22 +199,21 @@ void floydWarshall(Grafo *grafo, float ***matrizDistancia, int ***matrizCaminho)
                     verticeVizinho = verticeVizinho->proximo;
                 }
                 if(existeAresta){
-                    (*matrizDistancia[i][j]) = verticeVizinho->pesoAresta;
+                    (*matrizDistancia)[i][j] = verticeVizinho->pesoAresta;
                 }
                 else{
-                    (*matrizDistancia[i][j]) = maiorNumero;
+                    (*matrizDistancia)[i][j] = infinito;
                 }
             }
         }
     }
-
     for(i = 0; i < quantidadeVertices; i++){
         for(j = 0; j < quantidadeVertices; j++){
-            if((*matrizDistancia[i][j]) == maiorNumero){
-                (*matrizCaminho[i][j]) = 0;
+            if((*matrizDistancia)[i][j] == infinito){
+                (*matrizCaminho)[i][j] = 0;
             }
             else{
-                (*matrizCaminho[i][j]) = i;
+                (*matrizCaminho)[i][j] = i;
             }
         }
     }
@@ -224,15 +221,130 @@ void floydWarshall(Grafo *grafo, float ***matrizDistancia, int ***matrizCaminho)
     for(k = 0; k < quantidadeVertices; k++){
         for(i = 0; i < quantidadeVertices; i++){
             for(j = 0; j < quantidadeVertices; j++){
-                if((*matrizDistancia[i][j]) > ((*matrizDistancia[i][k]) + (*matrizDistancia[k][j]))){
-                    (*matrizDistancia[i][j]) = ((*matrizDistancia[i][k]) + (*matrizDistancia[k][j]));
-                    (*matrizCaminho[i][j]) = (*matrizCaminho[k][j]);
+                if((*matrizDistancia)[i][j] > ((*matrizDistancia)[i][k] + (*matrizDistancia)[k][j])){
+                    (*matrizDistancia)[i][j] = ((*matrizDistancia)[i][k] + (*matrizDistancia)[k][j]);
+                    (*matrizCaminho)[i][j] = (*matrizCaminho)[k][j];
                 }
             }
         }
     }
 }
 
+float excentricidadeVertice(Grafo *grafo, int vertice){
+    int i, quantidadeVertices;
+    float **matrizDistancia;
+    int **matrizCaminho;
+    float excentricidade = 0;
+    quantidadeVertices = getQuantidadeVertices(grafo);
+    matrizCaminho = (int**)malloc(quantidadeVertices * sizeof(int*));
+    matrizDistancia= (float**)malloc(quantidadeVertices * sizeof(float*));
+    for(i = 0; i < quantidadeVertices; i++){
+        matrizCaminho[i] = (int*)malloc(quantidadeVertices * sizeof(int));
+        matrizDistancia[i] = (float*)malloc(quantidadeVertices * sizeof(float));
+    }
+    floydWarshall(grafo, &matrizDistancia, &matrizCaminho);
+    if(matrizDistancia[vertice - 1][vertice - 1] < 0){
+        return infinito * -1;
+    }
+    for(i = 0; i < quantidadeVertices; i++){
+        if(matrizDistancia[vertice - 1][i] > excentricidade){
+            excentricidade = matrizDistancia[vertice - 1][i];
+        }
+    }
+    return excentricidade; // Olhar novamente
+}
+
+float raioGrafo(Grafo *grafo){
+    int i, quantidadeVertices;
+    float raio, excentricidade;
+    quantidadeVertices = getQuantidadeVertices(grafo);
+    for(i = 0; i < quantidadeVertices; i++){
+        excentricidade = excentricidadeVertice(grafo, i + 1);
+        if(i == 0){
+            raio = excentricidade;
+        }
+        else if(excentricidade < raio){
+            raio = excentricidade;
+        }
+    }
+    return raio;
+}
+
+float diametroGrafo(Grafo *grafo){
+    int i, quantidadeVertices;
+    float diametro, excentricidade;
+    quantidadeVertices = getQuantidadeVertices(grafo);
+    for(i = 0; i < quantidadeVertices; i++){
+        excentricidade = excentricidadeVertice(grafo, i + 1);
+        if(i == 0){
+            diametro = excentricidade;
+        }
+        else if(excentricidade > diametro){
+            diametro = excentricidade;
+        }
+    }
+    return diametro;
+}
+
+char* centroGrafo(Grafo *grafo){
+    char aux[20] = "";
+    char *centro = (char*)malloc(sizeof(char));
+    char vertice[11];
+    int i, quantidadeVertices;
+    float raio, excentricidade;
+    quantidadeVertices = getQuantidadeVertices(grafo);
+    for(i = 0; i < quantidadeVertices; i++){
+        excentricidade = excentricidadeVertice(grafo, i + 1);
+
+        if(i == 0){
+            raio = excentricidade;
+            sprintf(vertice, "%d", i + 1);
+            strcat(centro, vertice);
+            strcat(centro, " ");
+        }
+        else {
+            if(excentricidade < raio){
+                raio = excentricidade;
+                sprintf(vertice, "%d", i + 1);
+                strcat(centro, aux);
+                strcat(centro, vertice);
+                strcat(centro, " ");
+            }
+            if(excentricidade == raio){
+                sprintf(vertice, "%d", i + 1);
+                strcat(centro, vertice);
+                strcat(centro, " ");
+            }
+        }
+
+    }
+}
+
+float centralidadeProximidade(Grafo *grafo, int vertice){
+    int i, quantidadeVertices;
+    float **matrizDistancia;
+    int **matrizCaminho;
+    float centralidade = 0;
+    bool existeCicuitoNegativo = false;
+    quantidadeVertices = getQuantidadeVertices(grafo);
+    matrizCaminho = (int**)malloc(quantidadeVertices * sizeof(int*));
+    matrizDistancia= (float**)malloc(quantidadeVertices * sizeof(float*));
+    for(i = 0; i < quantidadeVertices; i++){
+        matrizCaminho[i] = (int*)malloc(quantidadeVertices * sizeof(int));
+        matrizDistancia[i] = (float*)malloc(quantidadeVertices * sizeof(float));
+    }
+    floydWarshall(grafo, &matrizDistancia, &matrizCaminho);
+    for(i = 0; i < quantidadeVertices; i++){
+        if(matrizDistancia[i][i] < 0){
+            existeCicuitoNegativo = true;
+        }
+        centralidade += matrizDistancia[vertice - 1][i];
+    }
+    if(existeCicuitoNegativo){
+        return 0;
+    }
+    return (quantidadeVertices - 1) / centralidade;
+}
 
 void buscaProfundidade(Grafo *grafo, int vertice){
     int i, quantidadeVertices = getQuantidadeVertices(grafo);
