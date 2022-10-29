@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdbool.h>
 
+#define infinito  2147483647
+
 typedef struct vertVizi* apontadorVerticeVizinho;
 typedef struct vertVizi{
     int numeroDoVertice;
@@ -48,3 +50,10 @@ void quickSort(int **sequenciaGraus, int Esq, int Dir);
 void particaoQuickSort(int **sequenciaGraus, int Esq, int Dir,int *i, int *j);
 
 void  FloydWarshall(Grafo *grafo, float ***matrizDistancia, int ***matrizCaminho);
+float excentricidadeVertice(Grafo *grafo, int vertice);
+float raioGrafo(Grafo *grafo);
+float diametroGrafo(Grafo *grafo);
+char* centroGrafo(Grafo *grafo);
+float centralidadeProximidade(Grafo *grafo, int vertice);
+void buscaProfundidade(Grafo *grafo, int vertice);
+void buscaProfundidadeAux(Grafo *grafo, int vertice, int *visitados, int ***arestas);
