@@ -48,3 +48,7 @@ void quickSort(int **sequenciaGraus, int Esq, int Dir);
 void particaoQuickSort(int **sequenciaGraus, int Esq, int Dir,int *i, int *j);
 
 void  FloydWarshall(Grafo *grafo, float ***matrizDistancia, int ***matrizCaminho);
+
+void buscaProfundidade(Grafo *grafo, int vertice);
+
+void buscaProfundidadeAux(Grafo *grafo, int vertice, int *visitados, int ***arestas);

@@ -9,5 +9,7 @@ int main(){
     printf("Vertices vizinhos do 5: %s\n", verticesVizinhos(&grafo, 5)); // exemplo
     printf("Grau do vertice 5: %d\n", verticeGrau(&grafo, 5));
     printf("Sequencia de graus: %s\n", sequenciaGrausGrafo(&grafo));
+    printf("Busca de Profundidade: \n");
+    buscaProfundidade(&grafo,1);
     return 0;
 }

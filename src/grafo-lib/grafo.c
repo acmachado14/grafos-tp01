@@ -95,7 +95,7 @@ char* verticesVizinhos(Grafo *grafo, int vertice){
 
     verticeVizinho = grafo->vertice[vertice - 1].primeiro;
     while (verticeVizinho != NULL){
-        itoa(verticeVizinho->numeroDoVertice, verticeAux, 10);
+        sprintf(verticeAux, "%d", verticeVizinho->numeroDoVertice);
         strcat(vertices, verticeAux);
         strcat(vertices, " ");
         verticeVizinho = verticeVizinho->proximo;
@@ -139,7 +139,7 @@ char* sequenciaGrausGrafo(Grafo *grafo){
     strcpy(sequeGraus, aux);
 
     for(i = 0; i < quantidadeVertices; i++){
-        itoa(sequenciaGraus[i], verticeAux, 10);
+        sprintf(verticeAux, "%d", sequenciaGraus[i]);
         strcat(sequeGraus, verticeAux);
         strcat(sequeGraus, " ");
     }
@@ -251,17 +251,19 @@ void buscaProfundidade(Grafo *grafo, int vertice){
         }
     }
 
+    printf("Sequencias de vertices visitados: ");
     buscaProfundidadeAux(grafo, vertice, visitados, &arestas);
+    printf("\n");
 
-
-    printf("Arestas: \n");
+    printf("Arestas: ");
     for(i = 0; i < quantidadeVertices; i++){
         for(int j = 0; j < quantidadeVertices; j++){
             if(arestas[i][j] == 0){
-                printf("aresta: %d %d", i + 1, j + 1);
+                printf("%d%d ", i + 1, j + 1);
             }
         }
     }
+    printf("\n");
 
     free(visitados);
 }
@@ -275,8 +277,8 @@ void buscaProfundidadeAux(Grafo *grafo, int vertice, int *visitados, int ***ares
     verticeVizinho = grafo->vertice[vertice - 1].primeiro;
     while (verticeVizinho != NULL){
         if(visitados[verticeVizinho->numeroDoVertice - 1] == 0){
-            buscaProfundidadeAux(grafo, verticeVizinho->numeroDoVertice, visitados);
-            (*arestas[vertice - 1][verticeVizinho->numeroDoVertice - 1]) = 1;
+            buscaProfundidadeAux(grafo, verticeVizinho->numeroDoVertice, visitados, arestas);
+            (*arestas)[vertice - 1][verticeVizinho->numeroDoVertice - 1] = 1;
         }
         verticeVizinho = verticeVizinho->proximo;
     }
