@@ -1,0 +1,37 @@
+- Retornar a ordem do grafo
+- Retornar o tamanho do grafo 
+- Retornar os vizinhos de um vértice fornecido
+- Determinar o grau de um vértice fornecido
+- Retornar a sequência de graus do grafo
+- Determinar a excentricidade de um vértice
+- Determinar o raio do grafo
+- Determinar o diâmetro do grafo
+- Determinar o centro do grafo
+- Determinar a sequência de vértices visitados na busca em profundidade e 
+informar a(s) aresta(s) que não faz(em) parte da árvore de busca em profundidade.
+- Determinar distância e caminho mínimo
+- Determinar a centralidade de proximidade C de um vértice x, dada por1
+
+5
+1 2 5
+1 3 4
+1 4 1
+2 3 1
+3 4 1
+3 5 5
+4 5 2
+
+
+(1)5
+(2)7
+(3)1-(2,3,4) 2-(1,3) 3-(1,2,4,5) 4-(1,5) 5-(3,4)
+(4)1-(3) 2-(2) 3-(4) 4-(3) 5-(2)
+(5)3-2-4-3-2
+(6)2
+(7)1
+(8)4
+(9)4
+(10)
+(10.1)
+(11)
+(12)
