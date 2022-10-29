@@ -87,11 +87,9 @@ int tamanhoGrafo(Grafo *grafo){
 
 char* verticesVizinhos(Grafo *grafo, int vertice){
     apontadorVerticeVizinho verticeVizinho;
-    char aux[20] = "";
     char *vertices = (char*)malloc(sizeof(char));
     char verticeAux[10];
-    strcpy(vertices, aux);
-
+    strcpy(vertices, "");
     verticeVizinho = grafo->vertice[vertice - 1].primeiro;
     while (verticeVizinho != NULL){
         sprintf(verticeAux, "%d", verticeVizinho->numeroDoVertice);
@@ -135,8 +133,7 @@ char* sequenciaGrausGrafo(Grafo *grafo){
     char aux[20] = "";
     char *sequeGraus = (char*)malloc(sizeof(char));
     char verticeAux[10];
-    strcpy(sequeGraus, aux);
-
+    strcpy(sequeGraus, "");
     for(i = 0; i < quantidadeVertices; i++){
         sprintf(verticeAux, "%d", sequenciaGraus[i]);
         strcat(sequeGraus, verticeAux);
@@ -213,11 +210,10 @@ void floydWarshall(Grafo *grafo, float ***matrizDistancia, int ***matrizCaminho)
                 (*matrizCaminho)[i][j] = 0;
             }
             else{
-                (*matrizCaminho)[i][j] = i;
+                (*matrizCaminho)[i][j] = i + 1;
             }
         }
     }
-
     for(k = 0; k < quantidadeVertices; k++){
         for(i = 0; i < quantidadeVertices; i++){
             for(j = 0; j < quantidadeVertices; j++){
@@ -287,17 +283,19 @@ float diametroGrafo(Grafo *grafo){
 }
 
 char* centroGrafo(Grafo *grafo){
-    char aux[20] = "";
     char *centro = (char*)malloc(sizeof(char));
     char vertice[11];
     int i, quantidadeVertices;
-    float raio, excentricidade;
+    float raio = 0, excentricidade;
     quantidadeVertices = getQuantidadeVertices(grafo);
     for(i = 0; i < quantidadeVertices; i++){
         excentricidade = excentricidadeVertice(grafo, i + 1);
-
+        if(excentricidade == infinito * -1){
+            return NULL;
+        }
         if(i == 0){
             raio = excentricidade;
+            strcpy(centro, "");
             sprintf(vertice, "%d", i + 1);
             strcat(centro, vertice);
             strcat(centro, " ");
@@ -306,11 +304,11 @@ char* centroGrafo(Grafo *grafo){
             if(excentricidade < raio){
                 raio = excentricidade;
                 sprintf(vertice, "%d", i + 1);
-                strcat(centro, aux);
+                strcpy(centro, "");
                 strcat(centro, vertice);
                 strcat(centro, " ");
             }
-            if(excentricidade == raio){
+            else if(excentricidade == raio){
                 sprintf(vertice, "%d", i + 1);
                 strcat(centro, vertice);
                 strcat(centro, " ");
@@ -318,6 +316,7 @@ char* centroGrafo(Grafo *grafo){
         }
 
     }
+    return centro;
 }
 
 float centralidadeProximidade(Grafo *grafo, int vertice){
@@ -344,6 +343,69 @@ float centralidadeProximidade(Grafo *grafo, int vertice){
         return 0;
     }
     return (quantidadeVertices - 1) / centralidade;
+}
+
+char* caminhoMinimoEntreVertice(Grafo *grafo, int verticeOrigem, int verticeDestino){
+    float distancia;
+    int i, j, quantidadeVertices = getQuantidadeVertices(grafo);
+    int verticeCaminho = verticeDestino;
+    float **matrizDistancia;
+    int **matrizCaminho;
+    char *caminhoMinimo = (char*)malloc(sizeof(char));
+    int *caminho = (int*)calloc(quantidadeVertices, sizeof(int));
+    matrizCaminho = (int**)malloc(quantidadeVertices * sizeof(int*));
+    matrizDistancia= (float**)malloc(quantidadeVertices * sizeof(float*));
+    for(i = 0; i < quantidadeVertices; i++){
+        matrizCaminho[i] = (int*)malloc(quantidadeVertices * sizeof(int));
+        matrizDistancia[i] = (float*)malloc(quantidadeVertices * sizeof(float));
+    }
+    
+    floydWarshall(grafo, &matrizDistancia, &matrizCaminho);
+    j = quantidadeVertices - 1;
+    caminho[j] = verticeCaminho;
+    while (verticeOrigem != matrizCaminho[verticeOrigem - 1][verticeCaminho - 1]){
+        j--;
+        verticeCaminho = matrizCaminho[verticeOrigem - 1][verticeCaminho - 1];
+        caminho[j] = verticeCaminho;
+        if(matrizDistancia[verticeCaminho - 1][verticeCaminho - 1] < 0){
+            return NULL;
+        }
+    }
+    j--;
+    verticeCaminho = matrizCaminho[verticeOrigem - 1][verticeCaminho - 1];
+    caminho[j] = verticeCaminho;
+    if(matrizDistancia[verticeCaminho - 1][verticeCaminho - 1] < 0){
+        return NULL;
+    }
+    char verticeAux[11];
+    strcpy(caminhoMinimo, "");
+    for(i = 0; i < quantidadeVertices; i++){
+        if(caminho[i] != 0){
+            sprintf(verticeAux, "%d", caminho[i]);
+            strcat(caminhoMinimo, verticeAux);
+            strcat(caminhoMinimo, " ");
+        }
+    }
+    return caminhoMinimo;
+}
+
+float distanciaEntreVertice(Grafo *grafo, int verticeOrigem, int verticeDestino){
+    float distancia;
+    int i, quantidadeVertices;
+    float **matrizDistancia;
+    int **matrizCaminho;
+    quantidadeVertices = getQuantidadeVertices(grafo);
+    matrizCaminho = (int**)malloc(quantidadeVertices * sizeof(int*));
+    matrizDistancia= (float**)malloc(quantidadeVertices * sizeof(float*));
+    for(i = 0; i < quantidadeVertices; i++){
+        matrizCaminho[i] = (int*)malloc(quantidadeVertices * sizeof(int));
+        matrizDistancia[i] = (float*)malloc(quantidadeVertices * sizeof(float));
+    }
+    floydWarshall(grafo, &matrizDistancia, &matrizCaminho);
+    if(matrizDistancia[verticeOrigem - 1][verticeOrigem - 1] < 0 || matrizDistancia[verticeDestino - 1][verticeDestino - 1] < 0){
+        return infinito * -1;
+    }
+    return matrizDistancia[verticeOrigem - 1][verticeDestino - 1];
 }
 
 void buscaProfundidade(Grafo *grafo, int vertice){

@@ -63,6 +63,10 @@ char* centroGrafo(Grafo *grafo);
 
 float centralidadeProximidade(Grafo *grafo, int vertice);
 
+char* caminhoMinimoEntreVertice(Grafo *grafo, int verticeOrigem, int verticeDestino);
+
+float distanciaEntreVertice(Grafo *grafo, int verticeOrigem, int verticeDestino);
+
 void buscaProfundidade(Grafo *grafo, int vertice);
 
 void buscaProfundidadeAux(Grafo *grafo, int vertice, int *visitados, int ***arestas);
