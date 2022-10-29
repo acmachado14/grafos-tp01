@@ -1,21 +1,30 @@
 import json
 
-QuantidadeAlunos = int(input("Digite a quantidade de alunos: "))
-NomesAlunos = [0] * QuantidadeAlunos
-Media = [0] * QuantidadeAlunos
-
-for i in range(QuantidadeAlunos):
-    NomesAlunos[i] = input("Digite o nome do aluno de numero : ")
-    Media[i] = float(input("Digite a media do respectivo aluno: "))
-
-for j in range(QuantidadeAlunos):
-    Alunos = {
-        "alunos": [{
-            "Nome": NomesAlunos[j],
-            "Media": Media[j]
-        }]
-    }
+with open("grafos-txt/grafo.txt") as meu_txt:
+    dados = meu_txt.read()
 
 
-with open("Alunos.json", "w") as arquivo:     
-    json.dump(Alunos, arquivo, indent=4)
+dados = dados.split()
+
+jsonData = {"data": {"nodes": {"_data": []}, "edges": {"_data": []}}, "ponderado":True}
+
+for j in range(int(dados[0])):
+    jsonData["data"]["nodes"]["_data"].append(
+        {
+            "id": j+1,
+            "label": f"{j+1}"
+        }
+    )
+
+for i in range(1, (len(dados)-1), 3):
+    jsonData["data"]["edges"]["_data"].append(
+        {
+            "from": int(dados[i]),
+            "to": int(dados[i+1]),
+            "label": dados[i+2]
+        }
+    )
+
+
+with open("grafos-json/arquivo.json", "w") as arquivo:     
+    json.dump(jsonData, arquivo, indent=2)
