@@ -3,7 +3,9 @@
 int main(){
     int i, j;
     Grafo grafo;
-    char nomeArquivo[] = "Djikstra";
+    char nomeArquivo[100];
+    printf("Digite o nome do arquivo a ser executado: ");
+    scanf("%s",&nomeArquivo);
     leituraSequenciaGraus(&grafo, nomeArquivo);
     printf("Ordem grafo: %d\n", ordemGrafo(&grafo));
     printf("Tamanho grafo: %d\n", tamanhoGrafo(&grafo));
