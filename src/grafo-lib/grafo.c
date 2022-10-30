@@ -1,6 +1,6 @@
 #include "grafo.h"
 
-
+// Função que inicializa a lista de adjacência que será usada para guardar o grafo
 void inicializaGrafo(Grafo *grafo, int quantidadeVertices){
     setQuantidadeVertices(grafo, quantidadeVertices);
     grafo->vertice = (Vertice*)malloc(quantidadeVertices * sizeof(Vertice));
@@ -31,11 +31,14 @@ void inserirAresta(Grafo *grafo, int verticeOrigem, int verticeDestino, float pe
     // Foi decrementado 1 pois o vertice 'verticeOrigem' esta uma possicao anterior na lista de adijacencia
 }
 
+// Função que auxilia na inserção de arestas
 void inserirArestaAuxiliar(Vertice *vertice, int verticeDestino, float pesoAresta){
+    // Caso o verticeOrigem não tenha ainda nenhuma aresta cadastrada, essa aresta se torna a primeira na lista de adjacência
     if(vertice->primeiro == NULL){
         vertice->primeiro = (apontadorVerticeVizinho)malloc(sizeof(VerticeVizinho));
         vertice->ultimo = vertice->primeiro;
     }
+    //Caso já tenha alguma aresta cadastrada, a aresta a ser cadastrada será adicionada ao final da lista de adjacência
     else{
         vertice->ultimo->proximo = (apontadorVerticeVizinho)malloc(sizeof(VerticeVizinho));
         vertice->ultimo = vertice->ultimo->proximo;
@@ -45,17 +48,19 @@ void inserirArestaAuxiliar(Vertice *vertice, int verticeDestino, float pesoArest
     vertice->ultimo->pesoAresta = pesoAresta;
 }
 
-void leituraSequenciaGraus(Grafo *grafo){
+// Função que irá ler os dados do arquivo txt
+bool leituraSequenciaGraus(Grafo *grafo){
     char nomeArquivo[43] = "Djikstra";
+    //char nomeArquivo[100];
     //printf("Digite o nome do arquivo que sera lido: ");
     //scanf("%s", nomeArquivo);
     char diretorio[50] = "routine/grafos-txt/";
     strcat(strcat(diretorio, nomeArquivo), ".txt");
     FILE *file;
     file = fopen(diretorio, "r");
-    if(file == NULL){ // Nao diferencia o nome de um arquivo com letra maiuscula para um arquivo com letra minuscula
-        printf("Erro na abertura do arquivo de entrada !!!!!!!!\n");
-        return;
+    if(file == NULL){
+        printf("\nErro na abertura do arquivo de entrada !!!!!!!!\n\n");
+        return false;
     }
     int quantidadeDeVertices, verticeOrigem, verticeDestino;
     float pesoAresta;
@@ -66,6 +71,7 @@ void leituraSequenciaGraus(Grafo *grafo){
         inserirAresta(grafo, verticeOrigem, verticeDestino, pesoAresta);
     }
     fclose(file);
+    return true;
 }
 
 int ordemGrafo(Grafo *grafo){
