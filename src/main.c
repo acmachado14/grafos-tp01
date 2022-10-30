@@ -4,9 +4,15 @@ int main(){
     int i, j;
     Grafo grafo;
     char nomeArquivo[100];
+    bool leituraOK;
     printf("Digite o nome do arquivo a ser executado: ");
     scanf("%s",&nomeArquivo);
-    leituraSequenciaGraus(&grafo, nomeArquivo);
+    printf("\n");
+    leituraOK = leituraSequenciaGraus(&grafo, nomeArquivo);
+    if(!leituraOK){
+        return 0;
+    }
+    printf("\n");
     printf("Ordem grafo: %d\n", ordemGrafo(&grafo));
     printf("Tamanho grafo: %d\n", tamanhoGrafo(&grafo));
     printf("Vertices vizinhos do 5: %s\n", verticesVizinhos(&grafo, 5)); // exemplo
@@ -21,5 +27,6 @@ int main(){
     printf("Centralidade proximidade do vertice 5: %f\n", centralidadeProximidade(&grafo, 5));
     printf("Distancia entre vertice: %f\n", distanciaEntreVertice(&grafo, 1, 7));
     printf("Caminho: %s\n", caminhoMinimoEntreVertice(&grafo, 1, 9));
+    printf("\n");
     return 0;
 }
