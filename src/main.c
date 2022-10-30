@@ -3,8 +3,10 @@
 int main(){
     int i, j;
     Grafo grafo;
-    char nomeArquivo[] = "Djikstra";
+    char nomeArquivo[100];
     bool leituraOK;
+    printf("Digite o nome do arquivo a ser executado: ");
+    scanf("%s",&nomeArquivo);
     printf("\n");
     leituraOK = leituraSequenciaGraus(&grafo, nomeArquivo);
     if(!leituraOK){
