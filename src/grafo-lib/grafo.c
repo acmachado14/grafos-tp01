@@ -1,5 +1,25 @@
 #include "grafo.h"
 
+void inicializaGrafo(Grafo *grafo, int quantidadeVertices);
+
+void inserirVertices(Vertice *vertice, int numeroDoVertice);
+
+void setQuantidadeVertices(Grafo *grafo, int quantidadeVertices);
+
+int getQuantidadeVertices(Grafo *grafo);
+
+void inserirAresta(Grafo *grafo, int verticeOrigem, int verticeDestino, float pesoAresta);
+
+void inserirArestaAuxiliar(Vertice *vertice, int verticeDestino, float pesoAresta);
+
+void quickSort(int **sequenciaGraus, int Esq, int Dir);
+
+void particaoQuickSort(int **sequenciaGraus, int Esq, int Dir,int *i, int *j);
+
+void  FloydWarshall(Grafo *grafo, float ***matrizDistancia, int ***matrizCaminho);
+
+void buscaProfundidadeAux(Grafo *grafo, int vertice, int *visitados, int ***arestas);
+
 // Função que inicializa a lista de adjacência que será usada para guardar o grafo
 void inicializaGrafo(Grafo *grafo, int quantidadeVertices){
     setQuantidadeVertices(grafo, quantidadeVertices);
