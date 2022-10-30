@@ -46,7 +46,7 @@ void inserirArestaAuxiliar(Vertice *vertice, int verticeDestino, float pesoArest
 }
 
 void leituraSequenciaGraus(Grafo *grafo){
-    char nomeArquivo[43] = "grafo1";
+    char nomeArquivo[43] = "Djikstra";
     //printf("Digite o nome do arquivo que sera lido: ");
     //scanf("%s", nomeArquivo);
     char diretorio[50] = "routine/grafos-txt/";
@@ -430,7 +430,7 @@ void buscaProfundidade(Grafo *grafo, int vertice){
     for(i = 0; i < quantidadeVertices; i++){
         for(int j = 0; j < quantidadeVertices; j++){
             if(arestas[i][j] == 0 && i != j){
-                printf("%d%d ", i + 1, j + 1);
+                printf("(%d-%d)", i + 1, j + 1);
             }
         }
     }
