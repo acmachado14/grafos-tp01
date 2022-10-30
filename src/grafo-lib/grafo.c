@@ -1,6 +1,5 @@
 #include "grafo.h"
 
-
 void inicializaGrafo(Grafo *grafo, int quantidadeVertices){
     setQuantidadeVertices(grafo, quantidadeVertices);
     grafo->vertice = (Vertice*)malloc(quantidadeVertices * sizeof(Vertice));
@@ -45,10 +44,7 @@ void inserirArestaAuxiliar(Vertice *vertice, int verticeDestino, float pesoArest
     vertice->ultimo->pesoAresta = pesoAresta;
 }
 
-void leituraSequenciaGraus(Grafo *grafo){
-    char nomeArquivo[43] = "Djikstra";
-    //printf("Digite o nome do arquivo que sera lido: ");
-    //scanf("%s", nomeArquivo);
+void leituraSequenciaGraus(Grafo *grafo, char nomeArquivo[]){
     char diretorio[50] = "routine/grafos-txt/";
     strcat(strcat(diretorio, nomeArquivo), ".txt");
     FILE *file;
