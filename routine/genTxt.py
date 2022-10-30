@@ -1,9 +1,9 @@
 import json
 
-with open("grafos-json/Djikstra.json", encoding='utf-8') as meu_json:
+with open("grafos-json/IdLabel.json", encoding='utf-8') as meu_json:
     dados = json.load(meu_json)
 
-arquivo = open('grafos-txt/Djikstra.txt','w')
+arquivo = open('grafos-txt/IdLabel.txt','w')
 
 qtdNodes = len(dados['data']['nodes']['_data'])
 
