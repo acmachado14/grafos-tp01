@@ -122,6 +122,9 @@ int verticeGrau(Grafo *grafo, int vertice){
 }
 
 char* sequenciaGrausGrafo(Grafo *grafo){
+    // A função calcula o grau de cada vertice, e coloca eles em um vetor, usa o algoritimo
+    // quick sort para ordenar estes vetor em ordem decrescente. A função transforma os graus em string, e retorna
+    // uma string que com a sequencia de graus.
     int quantidadeVertices = getQuantidadeVertices(grafo);
     int *sequenciaGraus;
     sequenciaGraus = (int*)malloc(quantidadeVertices * sizeof(int));
@@ -144,6 +147,7 @@ char* sequenciaGrausGrafo(Grafo *grafo){
     return sequeGraus;
 }
 
+// O algoritimo quick sort e usado para colocar a sequencia de graus em ordem decrescente
 void quickSort(int **sequenciaGraus, int Esq, int Dir){
     int i, j;
     particaoQuickSort(sequenciaGraus , Esq, Dir, &i, &j);
@@ -177,6 +181,7 @@ void particaoQuickSort(int **sequenciaGraus, int Esq, int Dir,int *i, int *j){
     } while (*i <= *j);
 }
 
+// Algoritimo de Floyd Warshall e usado para determinar o caminho minimo entre 2 vertices e a distancia entre eles
 void floydWarshall(Grafo *grafo, float ***matrizDistancia, int ***matrizCaminho){
     int i, j, k, quantidadeVertices;
     apontadorVerticeVizinho verticeVizinho;
@@ -229,6 +234,8 @@ void floydWarshall(Grafo *grafo, float ***matrizDistancia, int ***matrizCaminho)
 }
 
 float excentricidadeVertice(Grafo *grafo, int vertice){
+    // A função roda o algoritmo de Floyd Warshall e pega a excentricidade do vertice. Retorna -infinito caso 
+    // o vertice fassa parte de um ciclo negativo
     int i, quantidadeVertices;
     float **matrizDistancia;
     int **matrizCaminho;
@@ -249,10 +256,11 @@ float excentricidadeVertice(Grafo *grafo, int vertice){
             excentricidade = matrizDistancia[vertice - 1][i];
         }
     }
-    return excentricidade; // Olhar novamente
+    return excentricidade;
 }
 
 float raioGrafo(Grafo *grafo){
+    // Calcula a excentricidade de todos os vertices e retorna a menor excentricidade
     int i, quantidadeVertices;
     float raio, excentricidade;
     quantidadeVertices = getQuantidadeVertices(grafo);
@@ -269,6 +277,7 @@ float raioGrafo(Grafo *grafo){
 }
 
 float diametroGrafo(Grafo *grafo){
+    // Calcula a excentricidade de todos os vertices e retorna a maior excentricidade
     int i, quantidadeVertices;
     float diametro, excentricidade;
     quantidadeVertices = getQuantidadeVertices(grafo);
@@ -285,6 +294,7 @@ float diametroGrafo(Grafo *grafo){
 }
 
 char* centroGrafo(Grafo *grafo){
+    // Calcula a excentricidade de todos os vertices e retorna os vertices com a menor excentricidade
     char *centro = (char*)malloc(sizeof(char));
     char vertice[11];
     int i, quantidadeVertices;
@@ -348,6 +358,7 @@ float centralidadeProximidade(Grafo *grafo, int vertice){
 }
 
 char* caminhoMinimoEntreVertice(Grafo *grafo, int verticeOrigem, int verticeDestino){
+    // Calcula o caminho minimo entre vertices com base no algoritimo de floyd Warshall
     float distancia;
     int i, j, quantidadeVertices = getQuantidadeVertices(grafo);
     int verticeCaminho = verticeDestino;
@@ -392,6 +403,7 @@ char* caminhoMinimoEntreVertice(Grafo *grafo, int verticeOrigem, int verticeDest
 }
 
 float distanciaEntreVertice(Grafo *grafo, int verticeOrigem, int verticeDestino){
+    // Calcula a distancia entre vertices com base no algoritimo de floyd Warshall
     float distancia;
     int i, quantidadeVertices;
     float **matrizDistancia;

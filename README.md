@@ -11,7 +11,7 @@
  * [x] Determinar o centro do grafo
  * [x] Determinar a sequência de vértices visitados na busca em profundidade e
 informar a(s) aresta(s) que não faz(em) parte da árvore de busca em profundidade.
- * [ ] Determinar distância e caminho mínimo
+ * [x] Determinar distância e caminho mínimo
  * [x] Determinar a centralidade de proximidade C de um vértice x, dada por1
 
 <img src=".github/formula.JPG"/>
