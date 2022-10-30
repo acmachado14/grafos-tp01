@@ -49,11 +49,7 @@ void inserirArestaAuxiliar(Vertice *vertice, int verticeDestino, float pesoArest
 }
 
 // Função que irá ler os dados do arquivo txt
-bool leituraSequenciaGraus(Grafo *grafo){
-    char nomeArquivo[43] = "Djikstra";
-    //char nomeArquivo[100];
-    //printf("Digite o nome do arquivo que sera lido: ");
-    //scanf("%s", nomeArquivo);
+bool leituraSequenciaGraus(Grafo *grafo, char nomeArquivo[]){
     char diretorio[50] = "routine/grafos-txt/";
     strcat(strcat(diretorio, nomeArquivo), ".txt");
     FILE *file;

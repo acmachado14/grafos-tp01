@@ -3,9 +3,10 @@
 int main(){
     int i, j;
     Grafo grafo;
+    char nomeArquivo[] = "Djikstra";
     bool leituraOK;
     printf("\n");
-    leituraOK = leituraSequenciaGraus(&grafo);
+    leituraOK = leituraSequenciaGraus(&grafo, nomeArquivo);
     if(!leituraOK){
         return 0;
     }

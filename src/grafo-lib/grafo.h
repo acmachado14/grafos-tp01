@@ -36,7 +36,7 @@ void inserirAresta(Grafo *grafo, int verticeOrigem, int verticeDestino, float pe
 
 void inserirArestaAuxiliar(Vertice *vertice, int verticeDestino, float pesoAresta);
 
-bool leituraSequenciaGraus(Grafo *grafo);
+bool leituraSequenciaGraus(Grafo *grafo, char nomeArquivo[]);
 
 int ordemGrafo(Grafo *grafo);
 
