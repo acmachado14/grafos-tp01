@@ -1,6 +1,6 @@
 import json
 
-with open("grafos-txt/grafo.txt") as meu_txt:
+with open("routine/grafos-txt/video.txt") as meu_txt:
     dados = meu_txt.read()
 
 
@@ -26,5 +26,5 @@ for i in range(1, (len(dados)-1), 3):
     )
 
 
-with open("grafos-json/arquivo.json", "w") as arquivo:     
+with open("routine/grafos-json/arquivo.json", "w") as arquivo:     
     json.dump(jsonData, arquivo, indent=2)

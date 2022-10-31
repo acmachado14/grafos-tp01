@@ -226,14 +226,14 @@ void floydWarshall(Grafo *grafo, float ***matrizDistancia, int ***matrizCaminho)
                     (*matrizDistancia)[i][j] = verticeVizinho->pesoAresta;
                 }
                 else{
-                    (*matrizDistancia)[i][j] = infinito;
+                    (*matrizDistancia)[i][j] = INFINITO;
                 }
             }
         }
     }
     for(i = 0; i < quantidadeVertices; i++){
         for(j = 0; j < quantidadeVertices; j++){
-            if((*matrizDistancia)[i][j] == infinito){
+            if((*matrizDistancia)[i][j] == INFINITO){
                 (*matrizCaminho)[i][j] = 0;
             }
             else{
@@ -254,7 +254,7 @@ void floydWarshall(Grafo *grafo, float ***matrizDistancia, int ***matrizCaminho)
 }
 
 float excentricidadeVertice(Grafo *grafo, int vertice){
-    // A função roda o algoritmo de Floyd Warshall e pega a excentricidade do vertice. Retorna -infinito caso 
+    // A função roda o algoritmo de Floyd Warshall e pega a excentricidade do vertice. Retorna -INFINITO caso 
     // o vertice fassa parte de um ciclo negativo
     int i, quantidadeVertices;
     float **matrizDistancia;
@@ -269,7 +269,7 @@ float excentricidadeVertice(Grafo *grafo, int vertice){
     }
     floydWarshall(grafo, &matrizDistancia, &matrizCaminho);
     if(matrizDistancia[vertice - 1][vertice - 1] < 0){
-        return infinito * -1;
+        return INFINITO * -1;
     }
     for(i = 0; i < quantidadeVertices; i++){
         if(matrizDistancia[vertice - 1][i] > excentricidade){
@@ -322,7 +322,7 @@ char* centroGrafo(Grafo *grafo){
     quantidadeVertices = getQuantidadeVertices(grafo);
     for(i = 0; i < quantidadeVertices; i++){
         excentricidade = excentricidadeVertice(grafo, i + 1);
-        if(excentricidade == infinito * -1){
+        if(excentricidade == INFINITO * -1){
             return NULL;
         }
         if(i == 0){
@@ -437,7 +437,7 @@ float distanciaEntreVertice(Grafo *grafo, int verticeOrigem, int verticeDestino)
     }
     floydWarshall(grafo, &matrizDistancia, &matrizCaminho);
     if(matrizDistancia[verticeOrigem - 1][verticeOrigem - 1] < 0 || matrizDistancia[verticeDestino - 1][verticeDestino - 1] < 0){
-        return infinito * -1;
+        return INFINITO * -1;
     }
     return matrizDistancia[verticeOrigem - 1][verticeDestino - 1];
 }
@@ -450,10 +450,21 @@ void buscaProfundidade(Grafo *grafo, int vertice){
         visitados[i] = 0;
     }
 
+    apontadorVerticeVizinho verticeVizinho;
+
     int **arestas;
     arestas = (int**)malloc(quantidadeVertices * sizeof(int*));
     for(i = 0; i < quantidadeVertices; i++){
         arestas[i] = (int*)malloc(quantidadeVertices * sizeof(int));
+    }
+
+    for(i = 0; i < quantidadeVertices; i++){
+        verticeVizinho = grafo->vertice[i].primeiro;
+        while(verticeVizinho != NULL){
+            arestas[i][verticeVizinho->numeroDoVertice - 1] = 1;
+            arestas[verticeVizinho->numeroDoVertice - 1][i] = 1;
+            verticeVizinho = verticeVizinho->proximo;
+        }
     }
 
     printf("Sequencias de vertices visitados: ");
@@ -463,7 +474,7 @@ void buscaProfundidade(Grafo *grafo, int vertice){
     printf("Arestas nao usadas: ");
     for(i = 0; i < quantidadeVertices; i++){
         for(int j = 0; j < quantidadeVertices; j++){
-            if(arestas[i][j] == 0 && i != j){
+            if(arestas[i][j] == 1){
                 printf("(%d-%d)", i + 1, j + 1);
             }
         }
@@ -479,13 +490,11 @@ void buscaProfundidadeAux(Grafo *grafo, int vertice, int *visitados, int ***ares
     printf("%d ", vertice);
     verticeVizinho = grafo->vertice[vertice - 1].primeiro;
     
-    (*arestas)[vertice - 1][verticeVizinho->numeroDoVertice - 1] = 0;
-    (*arestas)[verticeVizinho->numeroDoVertice - 1][vertice - 1] = 0;
     while (verticeVizinho != NULL){
         if(visitados[verticeVizinho->numeroDoVertice - 1] == 0){
             buscaProfundidadeAux(grafo, verticeVizinho->numeroDoVertice, visitados, arestas);
-            (*arestas)[vertice - 1][verticeVizinho->numeroDoVertice - 1] = 1;
-            (*arestas)[verticeVizinho->numeroDoVertice - 1][vertice - 1] = 1;
+            (*arestas)[vertice - 1][verticeVizinho->numeroDoVertice - 1] = 2;
+            (*arestas)[verticeVizinho->numeroDoVertice - 1][vertice - 1] = 2;
         }
         verticeVizinho = verticeVizinho->proximo;
     }

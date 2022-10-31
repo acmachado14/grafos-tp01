@@ -3,8 +3,8 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define infinito  2147483647 // Como o algoritmo de floyd-Warshall utiliza uma marcação infinito, foi utilizado 
-                             // o maior numero que uma variavel do tipo int pode armazenar como infinito
+#define INFINITO  2147483647 // Como o algoritmo de floyd-Warshall utiliza uma marcação INFINITO, foi utilizado 
+                             // o maior numero que uma variavel do tipo int pode armazenar como INFINITO
 
 typedef struct vertVizi* apontadorVerticeVizinho;
 typedef struct vertVizi{
