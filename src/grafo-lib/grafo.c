@@ -18,7 +18,7 @@ void particaoQuickSort(int **sequenciaGraus, int Esq, int Dir,int *i, int *j);
 
 void  FloydWarshall(Grafo *grafo, float ***matrizDistancia, int ***matrizCaminho);
 
-void buscaProfundidadeAux(Grafo *grafo, int vertice, int *visitados, int ***arestas);
+void buscaProfundidadeAux(Grafo *grafo, int vertice, int *visitados, int ***arestas, int *verificaCiclo);
 
 // Função que inicializa a lista de adjacência que será usada para guardar o grafo
 void inicializaGrafo(Grafo *grafo, int quantidadeVertices){
@@ -26,7 +26,7 @@ void inicializaGrafo(Grafo *grafo, int quantidadeVertices){
     grafo->vertice = (Vertice*)malloc(quantidadeVertices * sizeof(Vertice));
     for(int i = 0; i < quantidadeVertices; i++){
         inserirVertices(&grafo->vertice[i], i + 1); // Incrementa 1 pois o vertice 1 esta na posicao 0, o vertice 2
-                                                    // esta na posicao 1 e assim por adiante, na lista de adijacencia, 
+                                                    // esta na posicao 1 e assim por adiante, na lista de adijacencia,
                                                     // que foi criada na variaver 'vertice' que esta dentro da struct Grafo
     }
 }
@@ -191,11 +191,11 @@ void particaoQuickSort(int **sequenciaGraus, int Esq, int Dir,int *i, int *j){
         while (pivo > (*sequenciaGraus)[*j]){
             (*j)--;
         }
-        if (*i <= *j){ 
+        if (*i <= *j){
             aux = (*sequenciaGraus)[*i];
-            (*sequenciaGraus)[*i] = (*sequenciaGraus)[*j]; 
+            (*sequenciaGraus)[*i] = (*sequenciaGraus)[*j];
             (*sequenciaGraus)[*j] = aux;
-            (*i)++; 
+            (*i)++;
             (*j)--;
         }
     } while (*i <= *j);
@@ -254,7 +254,7 @@ void floydWarshall(Grafo *grafo, float ***matrizDistancia, int ***matrizCaminho)
 }
 
 float excentricidadeVertice(Grafo *grafo, int vertice){
-    // A função roda o algoritmo de Floyd Warshall e pega a excentricidade do vertice. Retorna -INFINITO caso 
+    // A função roda o algoritmo de Floyd Warshall e pega a excentricidade do vertice. Retorna -INFINITO caso
     // o vertice fassa parte de um ciclo negativo
     int i, quantidadeVertices;
     float **matrizDistancia;
@@ -392,7 +392,7 @@ char* caminhoMinimoEntreVertice(Grafo *grafo, int verticeOrigem, int verticeDest
         matrizCaminho[i] = (int*)malloc(quantidadeVertices * sizeof(int));
         matrizDistancia[i] = (float*)malloc(quantidadeVertices * sizeof(float));
     }
-    
+
     floydWarshall(grafo, &matrizDistancia, &matrizCaminho);
     j = quantidadeVertices - 1;
     caminho[j] = verticeCaminho;
@@ -467,8 +467,9 @@ void buscaProfundidade(Grafo *grafo, int vertice){
         }
     }
 
+    int verificaCiclo;
     printf("Sequencias de vertices visitados: ");
-    buscaProfundidadeAux(grafo, vertice, visitados, &arestas);
+    buscaProfundidadeAux(grafo, vertice, visitados, &arestas, &verificaCiclo);
     printf("\n");
 
     printf("Arestas nao usadas: ");
@@ -481,20 +482,28 @@ void buscaProfundidade(Grafo *grafo, int vertice){
     }
     printf("\n");
 
+    if (verificaCiclo == 1){
+        printf("O grafo pussui Ciclo! \n");
+    }else{
+        printf("O grafo nao pussui Ciclo! \n");
+    }
+
     free(visitados);
 }
 
-void buscaProfundidadeAux(Grafo *grafo, int vertice, int *visitados, int ***arestas){
+void buscaProfundidadeAux(Grafo *grafo, int vertice, int *visitados, int ***arestas, int *verificaCiclo){
     apontadorVerticeVizinho verticeVizinho;
     visitados[vertice - 1] = 1;
     printf("%d ", vertice);
     verticeVizinho = grafo->vertice[vertice - 1].primeiro;
-    
+
     while (verticeVizinho != NULL){
         if(visitados[verticeVizinho->numeroDoVertice - 1] == 0){
-            buscaProfundidadeAux(grafo, verticeVizinho->numeroDoVertice, visitados, arestas);
+            buscaProfundidadeAux(grafo, verticeVizinho->numeroDoVertice, visitados, arestas, verificaCiclo);
             (*arestas)[vertice - 1][verticeVizinho->numeroDoVertice - 1] = 2;
             (*arestas)[verticeVizinho->numeroDoVertice - 1][vertice - 1] = 2;
+        }else{
+            (*verificaCiclo) = 1;
         }
         verticeVizinho = verticeVizinho->proximo;
     }
