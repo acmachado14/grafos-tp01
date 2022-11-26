@@ -467,7 +467,7 @@ void buscaProfundidade(Grafo *grafo, int vertice){
         }
     }
 
-    int verificaCiclo;
+    int verificaCiclo = 0;
     printf("Sequencias de vertices visitados: ");
     buscaProfundidadeAux(grafo, vertice, visitados, &arestas, &verificaCiclo);
     printf("\n");
@@ -503,7 +503,7 @@ void buscaProfundidadeAux(Grafo *grafo, int vertice, int *visitados, int ***ares
             (*arestas)[vertice - 1][verticeVizinho->numeroDoVertice - 1] = 2;
             (*arestas)[verticeVizinho->numeroDoVertice - 1][vertice - 1] = 2;
         }else{
-            (*verificaCiclo) = 1;
+            *verificaCiclo = 1;
         }
         verticeVizinho = verticeVizinho->proximo;
     }
