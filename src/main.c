@@ -56,6 +56,9 @@ int main(){
     printf("Distancia entre vertice %d e %d: %f\n",distanciaDe,distanciaPara,distanciaEntreVertice(&grafo,distanciaDe,distanciaPara));
 
     printf("Caminho de %d para %d: %s\n",caminhoDe,caminhoPara, caminhoMinimoEntreVertice(&grafo,caminhoDe,caminhoPara));
+
+    printf("Possui ciclo: %s\n", verificaCiclos(&grafo));
+
     printf("\n");
     return 0;
 }

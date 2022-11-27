@@ -18,7 +18,11 @@ void particaoQuickSort(int **sequenciaGraus, int Esq, int Dir,int *i, int *j);
 
 void  FloydWarshall(Grafo *grafo, float ***matrizDistancia, int ***matrizCaminho);
 
-void buscaProfundidadeAux(Grafo *grafo, int vertice, int *visitados, int ***arestas, int *verificaCiclo);
+void buscaProfundidadeAux(Grafo *grafo, int vertice, int *visitados, int ***arestas);
+
+int verificaCicloAux(int tam, int ***arestas, int vcaminho[], int pos);
+
+int podeIncluir(int i, int ***arestas, int vcaminho[], int pos);
 
 // Função que inicializa a lista de adjacência que será usada para guardar o grafo
 void inicializaGrafo(Grafo *grafo, int quantidadeVertices){
@@ -467,9 +471,8 @@ void buscaProfundidade(Grafo *grafo, int vertice){
         }
     }
 
-    int verificaCiclo = 0;
     printf("Sequencias de vertices visitados: ");
-    buscaProfundidadeAux(grafo, vertice, visitados, &arestas, &verificaCiclo);
+    buscaProfundidadeAux(grafo, vertice, visitados, &arestas);
     printf("\n");
 
     printf("Arestas nao usadas: ");
@@ -482,29 +485,96 @@ void buscaProfundidade(Grafo *grafo, int vertice){
     }
     printf("\n");
 
-    if (verificaCiclo == 1){
-        printf("O grafo pussui Ciclo! \n");
-    }else{
-        printf("O grafo nao pussui Ciclo! \n");
-    }
-
     free(visitados);
 }
 
-void buscaProfundidadeAux(Grafo *grafo, int vertice, int *visitados, int ***arestas, int *verificaCiclo){
+void buscaProfundidadeAux(Grafo *grafo, int vertice, int *visitados, int ***arestas){
     apontadorVerticeVizinho verticeVizinho;
-    visitados[vertice - 1] = 1;
+    visitados[vertice - 1]++;
     printf("%d ", vertice);
     verticeVizinho = grafo->vertice[vertice - 1].primeiro;
 
     while (verticeVizinho != NULL){
         if(visitados[verticeVizinho->numeroDoVertice - 1] == 0){
-            buscaProfundidadeAux(grafo, verticeVizinho->numeroDoVertice, visitados, arestas, verificaCiclo);
+            buscaProfundidadeAux(grafo, verticeVizinho->numeroDoVertice, visitados, arestas);
             (*arestas)[vertice - 1][verticeVizinho->numeroDoVertice - 1] = 2;
             (*arestas)[verticeVizinho->numeroDoVertice - 1][vertice - 1] = 2;
-        }else{
-            *verificaCiclo = 1;
         }
         verticeVizinho = verticeVizinho->proximo;
     }
+}
+
+char* verificaCiclos(Grafo *grafo){
+    int i, quantidadeVertices = getQuantidadeVertices(grafo);
+    int *visitados;
+    visitados = (int*)malloc(quantidadeVertices * sizeof(int));
+    for(i = 0; i < quantidadeVertices; i++){
+        visitados[i] = 0;
+    }
+
+    apontadorVerticeVizinho verticeVizinho;
+    int **arestas;
+    arestas = (int**)malloc(quantidadeVertices * sizeof(int*));
+    for(i = 0; i < quantidadeVertices; i++){
+        arestas[i] = (int*)malloc(quantidadeVertices * sizeof(int));
+    }
+
+    for(i = 0; i < quantidadeVertices; i++){
+        verticeVizinho = grafo->vertice[i].primeiro;
+        while(verticeVizinho != NULL){
+            arestas[i][verticeVizinho->numeroDoVertice - 1] = 1;
+            arestas[verticeVizinho->numeroDoVertice - 1][i] = 1;
+            verticeVizinho = verticeVizinho->proximo;
+        }
+    }
+
+    int vcaminho[3];
+    for( int i=0 ; i<3 ; i++)
+        vcaminho[i] = -1;
+    vcaminho[0] = 0;
+
+    int verificaCiclo = verificaCicloAux(quantidadeVertices, &arestas, vcaminho, 1);;
+
+    free(visitados);
+
+    if (verificaCiclo){
+        return "Sim";
+    }
+    
+    return "Nao";
+}
+
+int podeIncluir(int i, int ***arestas, int vcaminho[], int pos){
+    for(int j=0 ; j < 3 ; j++){
+        if( vcaminho[j] == i )
+            return 0;
+    }
+
+    if( ! (*arestas)[ vcaminho[pos-1] ][ i ] )
+        return 0;
+
+    return 1;
+}
+
+int verificaCicloAux(int tam, int ***arestas, int vcaminho[], int pos){
+    //Verifica se já conseguiu preencher o vetor de caminho, e então, se é válido.
+    if(pos == 3){
+        //verifica se há conexão entre o último e o primeiro para fechar o ciclo. (como estamos usando 1 e 0, é só retorna-los)
+        return (*arestas)[ vcaminho[pos-1] ][ vcaminho[0] ];    
+    }
+
+    //caso o caminho ainda não tenha sido preenchido
+    //vou "tentar ir à todos os outros vértices" para achar um caminho de sucesso
+    for(int i=0 ; i<tam ; i++){
+        if( podeIncluir(i, arestas, vcaminho, pos) ){
+            vcaminho[pos] = i;
+            
+            if(verificaCicloAux(tam, arestas, vcaminho, pos+1))
+                return 1;
+            
+            //se não foi possível chegar a um caminho, retorna até aqui para tentar um novo (pois está num loop tentando todos os vértices)
+            vcaminho[pos] = -1;            
+        }
+    }
+    return 0;
 }

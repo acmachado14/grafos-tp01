@@ -1,9 +1,9 @@
 import json
 
-with open("routine/grafos-json/video.json", encoding='utf-8') as meu_json:
+with open("routine/grafos-json/semCiclo.json", encoding='utf-8') as meu_json:
     dados = json.load(meu_json)
 
-arquivo = open('routine/grafos-txt/video.txt','w')
+arquivo = open('routine/grafos-txt/semCiclo.txt','w')
 
 qtdNodes = len(dados['data']['nodes']['_data'])
 
