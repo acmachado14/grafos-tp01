@@ -1,5 +1,16 @@
 # grafos-tp01
 
+LINK DO VIDEO: https://www.youtube.com/watch?v=Y4_ZapfNgcE&ab_channel=%C3%82ngeloCupertino
+
+
+
+
+
+
+
+
+
+
  * [x] Retornar a ordem do grafo
  * [x] Retornar o tamanho do grafo
  * [x] Retornar os vizinhos de um vértice fornecido
