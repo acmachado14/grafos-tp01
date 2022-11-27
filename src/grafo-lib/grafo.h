@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define INFINITO  2147483647 // Como o algoritmo de floyd-Warshall utiliza uma marcação INFINITO, foi utilizado 
+#define INFINITO  2147483647 // Como o algoritmo de floyd-Warshall utiliza uma marcação INFINITO, foi utilizado
                              // o maior numero que uma variavel do tipo int pode armazenar como INFINITO
 
 typedef struct vertVizi* apontadorVerticeVizinho;
@@ -51,3 +51,5 @@ char* caminhoMinimoEntreVertice(Grafo *grafo, int verticeOrigem, int verticeDest
 float distanciaEntreVertice(Grafo *grafo, int verticeOrigem, int verticeDestino);
 
 void buscaProfundidade(Grafo *grafo, int vertice);
+
+char* verificaCiclos(Grafo *grafo);
