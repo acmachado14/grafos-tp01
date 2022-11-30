@@ -14,7 +14,7 @@ int main(){
         return 0;
     }
     printf("---------------------------------------------------------\n");
-    
+    /*
     printf("Digite o vertice para descobrir seus vizinhos\n");
     scanf("%d",&vizinhoDe);
     printf("Digite o vertice para descobrir seu grau\n");
@@ -60,6 +60,8 @@ int main(){
     printf("Possui ciclo: %s\n", verificaCiclos(&grafo));
 
     printf("Conjunto de vertices da cobertura minima de vertices: %s\n", coberturaMinimaVertices(&grafo));
-    printf("---------------------------------------------------------\n");
+    printf("---------------------------------------------------------\n");*/
+
+    arvoreGeradoraMinima(&grafo,1);
     return 0;
 }

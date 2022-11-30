@@ -44,6 +44,8 @@ void inserirVerticeAresta(VerticeAresta *verticeAresta, int numeroVertice);
 
 void inicializaVerticeAresta(VerticeAresta *verticeAresta, int numeroVertive);
 
+void kruskal(Grafo *grafo,int origem, int **pai);
+
 
 // Função que inicializa a lista de adjacência que será usada para guardar o grafo
 void inicializaGrafo(Grafo *grafo, int quantidadeVertices){
@@ -733,4 +735,79 @@ void inserirVerticeAresta(VerticeAresta *verticeAresta, int numeroVertice){
     verticeAresta->ultimo->proximo = NULL;
     verticeAresta->ultimo->numeroDoVertice = numeroVertice;
     verticeAresta->ultimo->statusAresta = true;
+}
+
+void kruskal(Grafo *grafo,int origem, int **pai){
+    int i,j,destino,primeiro,numeroVertice,grauVertice;
+    int numeroDeVertices = grafo->quantidadeDeVertices;
+    int peso;
+    double menorPeso;
+    int *arvore = (int*) malloc(numeroDeVertices * sizeof(int));
+    
+    for (i = 0; i < numeroDeVertices; i++){
+        arvore[i] = grafo->vertice[i].numeroDoVertice;
+        (*pai)[i] = -1;
+
+    }
+    (*pai)[origem] = origem;
+    apontadorVerticeVizinho apontador;
+    while(true){
+        for (i=0;i<numeroDeVertices;i++){
+            printf("%d ",(*pai)[i]);
+        }
+        primeiro = 1;
+        printf("\n");
+        for(i = 0; i < numeroDeVertices; i++){
+            numeroVertice = grafo->vertice[i].numeroDoVertice;
+            grauVertice = verticeGrau(grafo, numeroVertice);
+            apontador = grafo->vertice[i].primeiro;
+            while (apontador != NULL){
+                
+                if(arvore[i] != arvore[apontador->numeroDoVertice]){
+                    if(primeiro){
+                        printf("Primeiro\n");
+                        menorPeso = apontador->pesoAresta;
+                        origem = numeroVertice;
+                        destino = apontador->numeroDoVertice;
+                        primeiro = 0;
+                        
+                    }
+                    else{
+                        printf("else \n");
+                        if(menorPeso > apontador->pesoAresta){
+                            printf("elseif \n");
+                            menorPeso = apontador->pesoAresta;
+                            origem = numeroVertice;
+                            destino = apontador->numeroDoVertice;
+                        }
+                    }
+                }
+                apontador = apontador->proximo;
+            }
+        }
+        if(primeiro == 1)break;
+        if((*pai)[origem] == -1) (*pai)[origem] = destino;
+        else (*pai)[destino] =  origem;
+
+        for(i = 0; i < numeroDeVertices; i++){
+            if(arvore[i] == arvore[destino]){
+                arvore[i] = arvore[origem];
+            }
+        }
+    }
+    free(arvore);
+}
+
+void arvoreGeradoraMinima(Grafo *grafo,int origem){
+    int *pai;
+    int i;
+    int quantidade = getQuantidadeVertices(grafo);
+    pai = (int*) calloc(quantidade, sizeof(int));
+    kruskal(grafo,origem,&pai);
+    printf("Saiu\n");
+    for(i=0; i<quantidade; i++){
+        if (pai[i] == 0)break;
+        printf("%d ",pai[i]);
+    }
+    printf("\n");
 }
