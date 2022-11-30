@@ -53,3 +53,5 @@ float distanciaEntreVertice(Grafo *grafo, int verticeOrigem, int verticeDestino)
 void buscaProfundidade(Grafo *grafo, int vertice);
 
 char* verificaCiclos(Grafo *grafo);
+
+char* coberturaMinimaVertices(Grafo *grafo);

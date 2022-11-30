@@ -13,8 +13,8 @@ int main(){
     if(!leituraOK){
         return 0;
     }
-    printf("\n");
-
+    printf("---------------------------------------------------------\n");
+    
     printf("Digite o vertice para descobrir seus vizinhos\n");
     scanf("%d",&vizinhoDe);
     printf("Digite o vertice para descobrir seu grau\n");
@@ -59,6 +59,7 @@ int main(){
 
     printf("Possui ciclo: %s\n", verificaCiclos(&grafo));
 
-    printf("\n");
+    printf("Conjunto de vertices da cobertura minima de vertices: %s\n", coberturaMinimaVertices(&grafo));
+    printf("---------------------------------------------------------\n");
     return 0;
 }

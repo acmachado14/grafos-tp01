@@ -1,5 +1,19 @@
 #include "grafo.h"
 
+typedef struct v* apontadorProximo;
+typedef struct v{
+    int numeroDoVertice;
+    int grau;
+    bool statusAresta;
+    apontadorProximo proximo;
+}VerticeGrau;
+
+typedef struct{
+    int verticeOrigem;
+    apontadorProximo primeiro;
+    apontadorProximo ultimo;
+}VerticeAresta;
+
 void inicializaGrafo(Grafo *grafo, int quantidadeVertices);
 
 void inserirVertices(Vertice *vertice, int numeroDoVertice);
@@ -23,6 +37,13 @@ void buscaProfundidadeAux(Grafo *grafo, int vertice, int *visitados, int ***ares
 int verificaCicloAux(int limite, int tam, int ***arestas, int vcaminho[], int pos);
 
 int podeIncluir(int limite, int i, int ***arestas, int vcaminho[], int pos);
+
+void inserirVerticeGrauDecrescente(VerticeGrau **verticeGrau, int numeroDoVertice, int grau);
+
+void inserirVerticeAresta(VerticeAresta *verticeAresta, int numeroVertice);
+
+void inicializaVerticeAresta(VerticeAresta *verticeAresta, int numeroVertive);
+
 
 // Função que inicializa a lista de adjacência que será usada para guardar o grafo
 void inicializaGrafo(Grafo *grafo, int quantidadeVertices){
@@ -570,4 +591,146 @@ int verificaCicloAux(int limite, int tam, int ***arestas, int vcaminho[], int po
         }
     }
     return 0;
+}
+
+
+
+char* coberturaMinimaVertices(Grafo *grafo){
+    int i, indiceVerticesCoberturaMinima = 0, grauVertice, numeroVertice, quantidadeDeVertices;
+    int numeroCobertura = 0;
+    quantidadeDeVertices = getQuantidadeVertices(grafo);
+    int *verticesCoberturaMinima = (int*)calloc(quantidadeDeVertices, sizeof(int));
+    bool continuar = false;
+    VerticeGrau *vertices = NULL;
+    for(i = 0; i < quantidadeDeVertices; i++){
+        numeroVertice = grafo->vertice[i].numeroDoVertice;
+        grauVertice = verticeGrau(grafo, numeroVertice);
+        inserirVerticeGrauDecrescente(&vertices, numeroVertice, grauVertice);
+    }
+    VerticeAresta *verticeAresta = (VerticeAresta*)malloc(quantidadeDeVertices * sizeof(VerticeAresta));
+    apontadorProximo apontadorProximoAuxiliar;
+    for(i = 0; i < quantidadeDeVertices; i++){
+        numeroVertice = grafo->vertice[i].numeroDoVertice;
+        inicializaVerticeAresta(&verticeAresta[i], numeroVertice);
+    }
+    apontadorVerticeVizinho verticeVizinho;
+    for(i = 0; i < quantidadeDeVertices; i++){
+        verticeVizinho = grafo->vertice[i].primeiro;
+        while (verticeVizinho != NULL){
+            numeroVertice = verticeVizinho->numeroDoVertice;
+            inserirVerticeAresta(&verticeAresta[i], numeroVertice);
+            verticeVizinho = verticeVizinho->proximo;
+        }
+    }
+
+    do{
+        continuar = false;
+        numeroCobertura++;
+        numeroVertice = vertices->numeroDoVertice;
+        verticesCoberturaMinima[indiceVerticesCoberturaMinima] = numeroVertice;
+        indiceVerticesCoberturaMinima++;
+        vertices = vertices->proximo;
+        for(i = 0; i < quantidadeDeVertices; i++){
+            apontadorProximoAuxiliar = verticeAresta[i].primeiro;
+            if(verticeAresta[i].verticeOrigem == numeroVertice){
+                while (apontadorProximoAuxiliar != NULL){
+                    apontadorProximoAuxiliar->statusAresta = false;
+                    apontadorProximoAuxiliar = apontadorProximoAuxiliar->proximo;
+                }
+            }
+            else{
+                while (apontadorProximoAuxiliar != NULL){
+                    if(apontadorProximoAuxiliar->numeroDoVertice == numeroVertice){
+                        apontadorProximoAuxiliar->statusAresta = false;
+                    }
+                    apontadorProximoAuxiliar = apontadorProximoAuxiliar->proximo;
+                }
+            }
+        }
+        for(i = 0; i < quantidadeDeVertices; i++){
+            apontadorProximoAuxiliar = verticeAresta[i].primeiro;
+            while (apontadorProximoAuxiliar != NULL){
+                if(apontadorProximoAuxiliar->statusAresta == true){
+                    continuar = true;
+                    break;
+                }
+                apontadorProximoAuxiliar = apontadorProximoAuxiliar->proximo;
+            }
+        }
+    } while (continuar == true);
+
+    char *conjuntoVertices = (char*)malloc(sizeof(char));
+    char vertice[11];
+    strcpy(conjuntoVertices, "");
+    strcat(conjuntoVertices, "{");
+    for(i = 0; i < quantidadeDeVertices; i++){
+        sprintf(vertice, "%d", verticesCoberturaMinima[i]);
+        strcat(conjuntoVertices, vertice);
+        if(i + 1 == quantidadeDeVertices || (verticesCoberturaMinima[i + 1] == 0)){
+            strcat(conjuntoVertices, "}");
+            break;
+        }
+        else{
+            strcat(conjuntoVertices, ", ");
+        }
+    }
+    printf("\n");
+    return conjuntoVertices;
+
+}
+
+void inserirVerticeGrauDecrescente(VerticeGrau **verticeGrau, int numeroDoVertice, int grau){
+    apontadorProximo aux1, aux2;
+    if((*verticeGrau) == NULL){
+        (*verticeGrau) = (apontadorProximo)malloc(sizeof(VerticeGrau));
+        (*verticeGrau)->proximo = NULL;
+        aux1 = (*verticeGrau);
+    }
+    else if(grau >= (*verticeGrau)->grau){
+        aux1 = (apontadorProximo)malloc(sizeof(VerticeGrau));
+        aux1->proximo = (*verticeGrau);
+        (*verticeGrau) = aux1;
+    }
+    else{
+        aux2 = (*verticeGrau);
+        while (grau < aux2->proximo->grau){
+            if(aux2->proximo->proximo == NULL){
+                aux2 = aux2->proximo;
+                break;
+            }
+            aux2 = aux2->proximo;
+        }
+        if(aux2->proximo == NULL){
+            aux1 = (apontadorProximo)malloc(sizeof(VerticeGrau));
+            aux1->proximo = NULL;
+            aux2->proximo = aux1;
+        }
+        else{
+            aux1 = (apontadorProximo)malloc(sizeof(VerticeGrau));
+            aux1->proximo = aux2->proximo;
+            aux2->proximo = aux1;
+        }
+    }
+    aux1->numeroDoVertice = numeroDoVertice;
+    aux1->grau = grau;
+}
+
+void inicializaVerticeAresta(VerticeAresta *verticeAresta, int numeroVertive){
+    verticeAresta->verticeOrigem = numeroVertive;
+    verticeAresta->primeiro = NULL;
+    verticeAresta->ultimo = NULL;
+}
+
+void inserirVerticeAresta(VerticeAresta *verticeAresta, int numeroVertice){
+    if(verticeAresta->primeiro == NULL){
+        verticeAresta->primeiro = (apontadorProximo)malloc(sizeof(VerticeGrau));
+        verticeAresta->ultimo = verticeAresta->primeiro;
+    }
+    else{
+        verticeAresta->ultimo->proximo = (apontadorProximo)malloc(sizeof(VerticeGrau));
+        verticeAresta->ultimo = verticeAresta->ultimo->proximo;
+    }
+    verticeAresta->ultimo->proximo = NULL;
+    verticeAresta->ultimo->numeroDoVertice = numeroVertice;
+    verticeAresta->ultimo->statusAresta = true;
 }
