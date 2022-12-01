@@ -111,27 +111,63 @@ void insert_vertex(Graph* g, int v) {
 }
 
 int read_graph(char* filename, Graph* g) {
+
   char diretorio[50] = "routine/grafos-txt/";
   strcat(strcat(diretorio, filename), ".txt");
   FILE *file;
   file = fopen(diretorio, "r");
   if(file == NULL){
       printf("\nErro na abertura do arquivo de entrada !!!!!!!!\n\n");
-      return false;
-  }
+      return -1;
+  }else {
+    empty_graph(g);
+  
+    char line[80];
+    char str_aux[80];
+    int i;
+    int j;
+    int k;
+    int arc_1;
+    int arc_2;
+    int weight = 0;
+    
+    for (i = 0 ; fgets(line, 80, file) != NULL ; i++) {
+      if (i == 0) {
+        insert_vertex(g, atoi(line));
+      }
 
-  int quantidadeDeVertices, verticeOrigem, verticeDestino, pesoAresta;
+      else {
+        for (j = 0, k = 0 ; j < 80 && line[j] != 32 && line[j] != '\0' ; j++, k++) 
+          str_aux[k] = line[j];
 
-  empty_graph(g);
-  fscanf(file, "%d ", &quantidadeDeVertices);
-  insert_vertex(g, quantidadeDeVertices);
-  fscanf(file, "%d ", &quantidadeDeVertices);
-  while (!feof(file)){
-      fscanf(file,"%d %d %d", &verticeOrigem, &verticeDestino, &pesoAresta);
-      insert_arc(g, verticeOrigem, verticeDestino, pesoAresta);
+        str_aux[k] = '\0';
+        arc_1 = atoi(str_aux);
+        
+        j = j + 1;
+        str_aux[0] = '\0';
+
+        for (k = 0 ; j < 80 && line[j] != 32 && line[j] != '\0' ; j++, k++)
+          str_aux[k] = line[j];
+
+        str_aux[k] = '\0';
+        arc_2 = atoi(str_aux);
+        
+        j = j + 1;
+        str_aux[0] = '\0';
+
+        for (k = 0 ; j < 80 && line[j] != 32 && line[j] != '\0' ; j++, k++)
+          str_aux[k] = line[j];
+
+        str_aux[k] = '\0';
+        weight = atoi(str_aux);
+
+        if (weight == 0) weight = 1;
+
+        insert_arc(g, arc_1, arc_2, weight);
+      }
+    }
   }
-  fclose(file);
-  return true;
+  return 0;
 }
 
 char* maximal_matching(Graph* g) {
@@ -150,9 +186,10 @@ char* maximal_matching(Graph* g) {
       if (i != j)
         m->arcs[i][j] = g->arcs[i][j];
 
+  
   Vertex* v = (Vertex*) malloc(g->vertex_count * sizeof(Vertex));
   get_ordered_vertex(m, v);
-  
+
   int saturated[m->vertex_count];
   for (i = 0 ; i < m->vertex_count ; i++)
     saturated[i] = 0;
@@ -190,10 +227,12 @@ char* maximal_matching(Graph* g) {
   }
   
   int arc_count = 0;
-  char vertice[11];
+  char vertice[80];
   char *resultado = (char*)malloc(sizeof(char));
-  strcpy(resultado, "{");
-  
+  strcpy(vertice, "");
+  strcpy(resultado, "");
+  strcpy(resultado, "A = {");
+
   for (i = 0 ; i < matching->vertex_count ; i++) {
     for (j = i ; j < matching->vertex_count ; j++) {
       if (matching->arcs[i][j] > 0) {

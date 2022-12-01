@@ -14,7 +14,6 @@ int main(){
     scanf("%s",&nomeArquivo);
     printf("\n");
 
-    //int read_status = read_graph(nomeArquivo, emparelMaximo);
     leituraOK = leituraSequenciaGraus(&grafo, nomeArquivo);
     if(!leituraOK){
         return 0;
@@ -37,6 +36,9 @@ int main(){
     printf("Digite os vertices para descobrir a distancia entre eles\n");
     scanf("%d",&caminhoDe);
     scanf("%d",&caminhoPara);
+    printf("Digite a origem da Arvore Geradoda Minima: \n");
+    scanf("%d",&origem);
+    arvoreGeradoraMinima(&grafo,origem);
 
     printf("Ordem grafo: %d\n", ordemGrafo(&grafo));
 
@@ -65,13 +67,10 @@ int main(){
 
     printf("Possui ciclo: %s\n", verificaCiclos(&grafo));
 
+    read_graph(nomeArquivo, emparelMaximo);
     printf("Emparelhamento Maximo: %s", maximal_matching(emparelMaximo));
 
     printf("Conjunto de vertices da cobertura minima de vertices: %s\n", coberturaMinimaVertices(&grafo));
-
-    printf("Digite a origem da Arvore Geradoda Minima: \n");
-    scanf("%d",&origem);
-    arvoreGeradoraMinima(&grafo,origem);
 
     printf("---------------------------------------------------------\n");
 
