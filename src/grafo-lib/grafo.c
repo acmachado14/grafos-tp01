@@ -740,6 +740,11 @@ void inserirVerticeAresta(VerticeAresta *verticeAresta, int numeroVertice){
     verticeAresta->ultimo->statusAresta = true;
 }
 
+/*Função recebe a origem da Arvore geradora minima, percorre as arestas a partir da origem e compara os pesos,
+fazendo a ligação origem-destino com a aresta de menor peso, para isso ele considera cada vértice como uma arvore independente,
+semelhante a uma Floresta, após isso, com base nas arestas de menor peso o algoritmo conecta arvores diferentes de forma
+a criar uma única arvore contendo todos os vértices.
+*/
 void kruskal(Grafo *grafo,int origem){
     FILE *pont_arq;
     int i,j,destino,primeiro,numeroVertice,grauVertice;
@@ -759,17 +764,22 @@ void kruskal(Grafo *grafo,int origem){
     apontadorVerticeVizinho apontador;
     while(true){
         primeiro = 1;
+
+        //Percorre todos os vertices
         for(i = 0; i < numeroDeVertices; i++){
             numeroVertice = grafo->vertice[i].numeroDoVertice;
             apontador = grafo->vertice[i].primeiro;
+
+            //Percorre todas as arestas do vertice
             while (apontador != NULL){
+
+                //Verifica se as arvores são diferentes
                 if(arvore[i] != arvore[apontador->numeroDoVertice - 1]){
                     if(primeiro){
                         menorPeso = apontador->pesoAresta;
                         origem = numeroVertice;
                         destino = apontador->numeroDoVertice;
                         primeiro = 0;
-                        
                     }
                     else{
                         if(menorPeso > apontador->pesoAresta){
@@ -778,11 +788,12 @@ void kruskal(Grafo *grafo,int origem){
                             destino = apontador->numeroDoVertice;
                         }
                     }  
-                    
                 }
                 apontador = apontador->proximo;
             }   
         }
+
+        //Caso não exista mais vértices a serem verificadas realiza a soma mínima
         if(primeiro == 1){
             pont_arq = fopen("routine/grafos-txt/arvoreGeradoraMinima.txt", "a");
             fprintf(pont_arq, "Soma minima: %.2f \n",somaPesos);
@@ -790,6 +801,7 @@ void kruskal(Grafo *grafo,int origem){
             break;
         }
 
+        //A cada vez que ele acha uma aresta de menor peso ele chama a função de preenchimento
         arquivoKruskal(numeroDeVertices,origem,destino,menorPeso);
         somaPesos += menorPeso;
         int b = arvore[destino - 1];
@@ -803,12 +815,14 @@ void kruskal(Grafo *grafo,int origem){
     free(arvore);
 }
 
+//Chama a função para gerar a arvore após receber a origem
 void arvoreGeradoraMinima(Grafo *grafo,int origem){
     int i;
     int quantidade = getQuantidadeVertices(grafo);
     kruskal(grafo,origem);
 }
 
+//Preenche o arquivo toda vez que uma nova aresta é adicionada na arvore
 void arquivoKruskal(int quantidade,int origem, int destino,float pesoAresta){
     FILE *pont_arq;
     pont_arq = fopen("routine/grafos-txt/arvoreGeradoraMinima.txt", "a");
@@ -818,4 +832,4 @@ void arquivoKruskal(int quantidade,int origem, int destino,float pesoAresta){
     }
     fprintf(pont_arq, "%d %d %2.f\n",origem,destino,pesoAresta);
     fclose(pont_arq);
-  }
+}
