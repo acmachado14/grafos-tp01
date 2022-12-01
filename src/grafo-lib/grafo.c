@@ -747,55 +747,27 @@ void kruskal(Grafo *grafo,int origem, int **pai){
     
     for (i = 0; i < numeroDeVertices; i++){
         arvore[i] = grafo->vertice[i].numeroDoVertice;
-        if(i + 1 == origem){
-            (*pai)[origem - 1] = origem;
-        }
-        else{
-            (*pai)[i] = -1;
-        }
+        (*pai)[i] = -1;
+
 
     }
-    //(*pai)[origem] = origem;
     apontadorVerticeVizinho apontador;
-    int c = 0;
-    printf("%d\n\n", menorPeso);
     while(true){
-        printf("-----------------------------------\n");
-        //if(c == 30){ break; }
-        c++;
-        printf("Pai\n");
-        for (i=0;i<numeroDeVertices;i++){
-            printf("%d ",(*pai)[i]);
-        }
-        printf("\n");
-        printf("Arvore\n");
-        for (i=0;i<numeroDeVertices;i++){
-            printf("%d ",arvore[i]);
-        }
-        printf("\n");
         primeiro = 1;
         for(i = 0; i < numeroDeVertices; i++){
             numeroVertice = grafo->vertice[i].numeroDoVertice;
             apontador = grafo->vertice[i].primeiro;
-            //printf("%d ", numeroVertice);
             while (apontador != NULL){
-                //printf("%d %d\n",numeroVertice, apontador->numeroDoVertice);
-               // printf("%d != %d\n",arvore[i], arvore[apontador->numeroDoVertice - 1]);
                 if(arvore[i] != arvore[apontador->numeroDoVertice - 1]){
-                    //printf("---------\n");
                     if(primeiro){
-                        //printf("Primeiro\n");
                         menorPeso = apontador->pesoAresta;
                         origem = numeroVertice;
                         destino = apontador->numeroDoVertice;
                         primeiro = 0;
-                        //printf("%f\n", menorPeso);
                         
                     }
                     else{
-                        //printf("else \n");
                         if(menorPeso > apontador->pesoAresta){
-                            //printf("elseif \n");
                             menorPeso = apontador->pesoAresta;
                             origem = numeroVertice;
                             destino = apontador->numeroDoVertice;
@@ -804,28 +776,21 @@ void kruskal(Grafo *grafo,int origem, int **pai){
                 }
                 apontador = apontador->proximo;
             }
-            //printf("\n");
-            //printf("menorPeso: %f\n", menorPeso);
         }
         printf("Origem: %d --> Destino: %d\n", origem, destino);
         if(primeiro == 1){
             break;
         }
-        //printf("Origem: %d --> Destino: %d\n", origem, destino);
-        printf("1: %d == -1\n",(*pai)[origem - 1]);
+        /*
         if((*pai)[origem - 1] == -1){
-            printf("%d = %d\n", origem , destino);
             (*pai)[origem - 1] = destino;
         }
         else{
-            printf("2: %d = %d\n", destino, origem);
             (*pai)[destino - 1] =  origem;
-        }
-
+        }*/
+        int b = arvore[destino - 1];
         for(i = 0; i < numeroDeVertices; i++){
-            //printf("%d == %d\n", arvore[i], arvore[destino - 1]);
-            if(arvore[i] == arvore[destino - 1]){
-                //printf("--%d %d\n", arvore[i], arvore[origem - 1]);
+            if(arvore[i] == b){
                 arvore[i] = arvore[origem - 1];
             }
         }
