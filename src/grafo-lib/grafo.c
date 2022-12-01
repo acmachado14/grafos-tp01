@@ -818,4 +818,4 @@ void arquivoKruskal(int quantidade,int origem, int destino,float pesoAresta){
     }
     fprintf(pont_arq, "%d %d %2.f\n",origem,destino,pesoAresta);
     fclose(pont_arq);
-  }
+}

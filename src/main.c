@@ -19,7 +19,7 @@ int main(){
         return 0;
     }
     printf("---------------------------------------------------------\n");
-   
+
     printf("Digite o vertice para descobrir seus vizinhos\n");
     scanf("%d",&vizinhoDe);
     printf("Digite o vertice para descobrir seu grau\n");
