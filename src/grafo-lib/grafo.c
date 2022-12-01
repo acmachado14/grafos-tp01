@@ -44,7 +44,9 @@ void inserirVerticeAresta(VerticeAresta *verticeAresta, int numeroVertice);
 
 void inicializaVerticeAresta(VerticeAresta *verticeAresta, int numeroVertive);
 
-void kruskal(Grafo *grafo,int origem, int **pai);
+void kruskal(Grafo *grafo,int origem);
+
+void arquivoKruskal(int quantidade,int origem, int destino,float pesoAresta);
 
 
 // Função que inicializa a lista de adjacência que será usada para guardar o grafo
@@ -738,19 +740,22 @@ void inserirVerticeAresta(VerticeAresta *verticeAresta, int numeroVertice){
     verticeAresta->ultimo->statusAresta = true;
 }
 
-void kruskal(Grafo *grafo,int origem, int **pai){
+void kruskal(Grafo *grafo,int origem){
+    FILE *pont_arq;
     int i,j,destino,primeiro,numeroVertice,grauVertice;
     int numeroDeVertices = grafo->quantidadeDeVertices;
-    int peso;
-    float menorPeso;
+    float menorPeso,pesoAresta;
     int *arvore = (int*) malloc(numeroDeVertices * sizeof(int));
-    
+    float somaPesos = 0;
+
+    pont_arq = fopen("routine/grafos-txt/arvoreGeradoraMinima.txt", "w");
+    fprintf(pont_arq, "%d \n",numeroDeVertices);
+    fclose(pont_arq);
+
     for (i = 0; i < numeroDeVertices; i++){
         arvore[i] = grafo->vertice[i].numeroDoVertice;
-        (*pai)[i] = -1;
-
-
     }
+
     apontadorVerticeVizinho apontador;
     while(true){
         primeiro = 1;
@@ -772,23 +777,23 @@ void kruskal(Grafo *grafo,int origem, int **pai){
                             origem = numeroVertice;
                             destino = apontador->numeroDoVertice;
                         }
-                    }
+                    }  
+                    
                 }
                 apontador = apontador->proximo;
-            }
+            }   
         }
-        printf("Origem: %d --> Destino: %d\n", origem, destino);
         if(primeiro == 1){
+            pont_arq = fopen("routine/grafos-txt/arvoreGeradoraMinima.txt", "a");
+            fprintf(pont_arq, "Soma minima: %.2f \n",somaPesos);
+            fclose(pont_arq);
             break;
         }
-        /*
-        if((*pai)[origem - 1] == -1){
-            (*pai)[origem - 1] = destino;
-        }
-        else{
-            (*pai)[destino - 1] =  origem;
-        }*/
+
+        arquivoKruskal(numeroDeVertices,origem,destino,menorPeso);
+        somaPesos += menorPeso;
         int b = arvore[destino - 1];
+
         for(i = 0; i < numeroDeVertices; i++){
             if(arvore[i] == b){
                 arvore[i] = arvore[origem - 1];
@@ -799,15 +804,18 @@ void kruskal(Grafo *grafo,int origem, int **pai){
 }
 
 void arvoreGeradoraMinima(Grafo *grafo,int origem){
-    int *pai;
     int i;
     int quantidade = getQuantidadeVertices(grafo);
-    pai = (int*) calloc(quantidade, sizeof(int));
-    kruskal(grafo,origem,&pai);
-    printf("----------------------------\n");
-    for(i=0; i<quantidade; i++){
-        //if (pai[i] == 0)break;
-        printf("%d: %d\n", i + 1, pai[i]);
-    }
-    printf("\n");
+    kruskal(grafo,origem);
 }
+
+void arquivoKruskal(int quantidade,int origem, int destino,float pesoAresta){
+    FILE *pont_arq;
+    pont_arq = fopen("routine/grafos-txt/arvoreGeradoraMinima.txt", "a");
+    if(pont_arq == NULL){
+        printf("Erro na abertura do arquivo!");
+        return;
+    }
+    fprintf(pont_arq, "%d %d %2.f\n",origem,destino,pesoAresta);
+    fclose(pont_arq);
+  }

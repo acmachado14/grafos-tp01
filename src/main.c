@@ -3,6 +3,7 @@
 
 int main(){
     int i, j;
+    int origem;
     Grafo grafo;
     Graph* emparelMaximo = (Graph*) malloc(sizeof(Graph));
 
@@ -13,13 +14,13 @@ int main(){
     scanf("%s",&nomeArquivo);
     printf("\n");
 
-    int read_status = read_graph(nomeArquivo, emparelMaximo);
+    //int read_status = read_graph(nomeArquivo, emparelMaximo);
     leituraOK = leituraSequenciaGraus(&grafo, nomeArquivo);
     if(!leituraOK){
         return 0;
     }
     printf("---------------------------------------------------------\n");
-    
+   
     printf("Digite o vertice para descobrir seus vizinhos\n");
     scanf("%d",&vizinhoDe);
     printf("Digite o vertice para descobrir seu grau\n");
@@ -67,8 +68,12 @@ int main(){
     printf("Emparelhamento Maximo: %s", maximal_matching(emparelMaximo));
 
     printf("Conjunto de vertices da cobertura minima de vertices: %s\n", coberturaMinimaVertices(&grafo));
+
+    printf("Digite a origem da Arvore Geradoda Minima: \n");
+    scanf("%d",&origem);
+    arvoreGeradoraMinima(&grafo,origem);
+
     printf("---------------------------------------------------------\n");
 
-    arvoreGeradoraMinima(&grafo,1);
     return 0;
 }
