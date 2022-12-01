@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "grafo.h": "c",
+        "maximummatching.h": "c"
+    }
+}

@@ -1,20 +1,25 @@
 #include "grafo-lib/grafo.h"
+#include "grafo-lib/matching/maximumMatching.h"
 
 int main(){
     int i, j;
     Grafo grafo;
+    Graph* emparelMaximo = (Graph*) malloc(sizeof(Graph));
+
     char nomeArquivo[100];
     bool leituraOK;
     int vizinhoDe,grauDe,profundidadeDe,exenDe,centralDe,distanciaDe,distanciaPara,caminhoDe,caminhoPara;
     printf("Digite o nome do arquivo a ser executado: ");
     scanf("%s",&nomeArquivo);
     printf("\n");
+
+    int read_status = read_graph(nomeArquivo, emparelMaximo);
     leituraOK = leituraSequenciaGraus(&grafo, nomeArquivo);
     if(!leituraOK){
         return 0;
     }
     printf("---------------------------------------------------------\n");
-    /*
+    
     printf("Digite o vertice para descobrir seus vizinhos\n");
     scanf("%d",&vizinhoDe);
     printf("Digite o vertice para descobrir seu grau\n");
@@ -59,8 +64,10 @@ int main(){
 
     printf("Possui ciclo: %s\n", verificaCiclos(&grafo));
 
+    printf("Emparelhamento Maximo: %s", maximal_matching(emparelMaximo));
+
     printf("Conjunto de vertices da cobertura minima de vertices: %s\n", coberturaMinimaVertices(&grafo));
-    printf("---------------------------------------------------------\n");*/
+    printf("---------------------------------------------------------\n");
 
     arvoreGeradoraMinima(&grafo,1);
     return 0;
