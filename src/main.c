@@ -18,6 +18,8 @@ int main(){
     if(!leituraOK){
         return 0;
     }
+
+    /*
     printf("---------------------------------------------------------\n");
 
     printf("Digite o vertice para descobrir seus vizinhos\n");
@@ -40,6 +42,7 @@ int main(){
     scanf("%d",&origem);
     arvoreGeradoraMinima(&grafo,origem);
 
+    printf("-------------------------- PARTE 1 -------------------------------\n");
     printf("Ordem grafo: %d\n", ordemGrafo(&grafo));
 
     printf("Tamanho grafo: %d\n", tamanhoGrafo(&grafo));
@@ -64,7 +67,13 @@ int main(){
     printf("Distancia entre vertice %d e %d: %f\n",distanciaDe,distanciaPara,distanciaEntreVertice(&grafo,distanciaDe,distanciaPara));
 
     printf("Caminho de %d para %d: %s\n",caminhoDe,caminhoPara, caminhoMinimoEntreVertice(&grafo,caminhoDe,caminhoPara));
-
+*/
+    printf("-------------------------- PARTE 2 -------------------------------\n");
+    
+    printf("Digite a origem da Arvore Geradoda Minima: \n");
+    scanf("%d",&origem);
+    arvoreGeradoraMinima(&grafo,origem);
+    
     printf("Possui ciclo: %s\n", verificaCiclos(&grafo));
 
     read_graph(nomeArquivo, emparelMaximo);
@@ -72,7 +81,7 @@ int main(){
 
     printf("Conjunto de vertices da cobertura minima de vertices: %s\n", coberturaMinimaVertices(&grafo));
 
-    printf("---------------------------------------------------------\n");
+    printf("------------------------------------------------------------------\n");
 
     return 0;
 }

@@ -227,8 +227,8 @@ char* maximal_matching(Graph* g) {
   }
   
   int arc_count = 0;
-  char vertice[80];
-  char *resultado = (char*)malloc(sizeof(char));
+  char vertice[10000];
+  char *resultado = (char*)malloc(100 * sizeof(char));
   strcpy(vertice, "");
   strcpy(resultado, "");
   strcpy(resultado, "A = {");
