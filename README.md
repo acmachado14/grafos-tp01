@@ -1,15 +1,8 @@
 # grafos-tp01
 
-LINK DO VIDEO: https://www.youtube.com/watch?v=Y4_ZapfNgcE&ab_channel=%C3%82ngeloCupertino
+Link do Video que explica a primeira parte: https://www.youtube.com/watch?v=Y4_ZapfNgcE&ab_channel=%C3%82ngeloCupertino
 
-
-
-
-
-
-
-
-
+Link do Video que explica a segunda parte: https://www.youtube.com/watch?v=JDJILTIkGMM&ab_channel=%C3%82ngeloCupertino
 
  * [x] Retornar a ordem do grafo
  * [x] Retornar o tamanho do grafo
@@ -24,6 +17,13 @@ LINK DO VIDEO: https://www.youtube.com/watch?v=Y4_ZapfNgcE&ab_channel=%C3%82ngel
 informar a(s) aresta(s) que não faz(em) parte da árvore de busca em profundidade.
  * [x] Determinar distância e caminho mínimo
  * [x] Determinar a centralidade de proximidade C de um vértice x, dada por1
+ * [x] Verificar se um grafo possui ciclo.
+ * [x] Determinar a árvore geradora mínima de um grafo.
+ * [x] A árvore geradora mínima deve ser escrita em um arquivo (no mesmo formato
+de entrada do grafo), assim como seu peso total.
+ * [x] Determinar uma cobertura mínima de vértices de um grafo por meio de uma
+heurística.
+ * [x] Determinar o emparelhamento máximo em um grafo
 
 <img src=".github/formula.JPG"/>
 
