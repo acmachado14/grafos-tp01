@@ -1,8 +1,12 @@
 # grafos-tp01
 
+## Descrição
+Trabalho feito com o objetivo de trazer diversos algoritmos direcionados a grafos e suas aplicações
+
 Link do Video que explica a primeira parte: https://www.youtube.com/watch?v=Y4_ZapfNgcE&ab_channel=%C3%82ngeloCupertino
 
 Link do Video que explica a segunda parte: https://www.youtube.com/watch?v=JDJILTIkGMM&ab_channel=%C3%82ngeloCupertino
+- - - -
 
  * [x] Retornar a ordem do grafo
  * [x] Retornar o tamanho do grafo
@@ -25,12 +29,25 @@ de entrada do grafo), assim como seu peso total.
 heurística.
  * [x] Determinar o emparelhamento máximo em um grafo
 
-<img src=".github/formula.JPG"/>
+- - - -
+## Como executar
+
+```
+make compile
+```
+
+```
+make run
+```
 
 - - - -
-<h2 id="contribuidores">
-    Contribuidores
-</h2>
+## Resultado Terminal
+<img width=550px src=".github/terminal.JPG"/>
+
+- - - -
+    
+## Contribuidores
+
 
 - [Angelo Machado](https://github.com/acmachado14)
 - [Arthur Bastos](https://github.com/ArthurFBastos)
